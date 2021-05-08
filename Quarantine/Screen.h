@@ -8,6 +8,7 @@
 #include "Object.h"
 #include "Camera.h"
 #include "Plane.h"
+#include "Image.h"
 #include "Cube.h"
 #include "Sphere.h"
 #include "Cylinder.h"
@@ -26,7 +27,7 @@ namespace Screen {
 				const Event::KeyPress& e = static_cast<const Event::KeyPress&>(baseEvent);
 
 				if (e.key == GLFW_KEY_1 && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::PLANE);
+					this->objectsQueue.push(ObjectClasses::IMAGE);
 				}
 				if (e.key == GLFW_KEY_2 && e.action == GLFW_PRESS) {
 					this->objectsQueue.push(ObjectClasses::CUBE);
@@ -118,6 +119,9 @@ namespace Screen {
 					break;
 				case ObjectClasses::LIGHT:
 					this->objects.emplace_back(new Object::Light({ 0, 0, 0 }));
+					break;
+				case ObjectClasses::IMAGE:
+					this->objects.emplace_back(new Object::Image({ 0, 0, 0 }, "assets/mainScreen.bmp"));
 					break;
 				}
 				this->objectsQueue.pop();

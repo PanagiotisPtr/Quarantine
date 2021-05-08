@@ -169,11 +169,17 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Editable.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="StringFormatter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\sprite_dice.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

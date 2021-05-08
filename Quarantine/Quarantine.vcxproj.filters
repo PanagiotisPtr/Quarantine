@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Global">
       <UniqueIdentifier>{15fff92a-648b-4301-acd4-01a087d8a920}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets">
+      <UniqueIdentifier>{286837c5-c81b-41a0-8a4f-258403f09cf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{5d7deb8e-b8bc-47b1-a4bf-499969c165e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -95,5 +101,19 @@
     <ClInclude Include="Global.h">
       <Filter>Source Files\Global</Filter>
     </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLoader.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="StringFormatter.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\sprite_dice.bmp">
+      <Filter>Resource Files\assets</Filter>
+    </Image>
   </ItemGroup>
 </Project>

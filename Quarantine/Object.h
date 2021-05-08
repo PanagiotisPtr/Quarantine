@@ -24,7 +24,8 @@ enum class ObjectClasses {
 	PLANE,
 	CYLINDER,
 	CUBE,
-	LIGHT
+	LIGHT,
+	IMAGE
 };
 
 namespace Object {
@@ -94,7 +95,7 @@ namespace Object {
 			return out;
 		}
 
-		void drawObject() const {
+		virtual void drawObject() const {
 			glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();
 			glMultMatrixf(glm::value_ptr(this->getTransform()));
