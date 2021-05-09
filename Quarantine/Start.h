@@ -7,9 +7,7 @@ namespace Screen {
 
 	class Start : public Screen {
 	public:
-		Start() : Screen() {
-			this->objects.emplace_back(new Object::Camera({ 0, 0.25, -2 }, true));
-		}
+		Start() : Screen() {}
 	protected:
 		void update() override {}
 
@@ -43,6 +41,15 @@ namespace Screen {
 					}
 				}
 			}, Global::ObjectId);
+		}
+
+		void setupScene() override {
+			this->objects.emplace_back(new Object::Camera({ 0, 0.25, -2 }, false));
+			this->objects.emplace_back(new Object::Image({ 0,0,0 }, "assets/mainScreen.bmp"));
+
+			this->objects.back()->moveAndPlaceObject({ 0.0f,0.5f,0.0 });
+			this->objects.back()->scaleAndPlaceObject({ -0.4f,-0.4f,-0.4f });
+			this->objects.back()->scaleAndPlaceObject({ 0.65f,0.1f,0.65f });
 		}
 	};
 

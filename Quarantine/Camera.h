@@ -11,10 +11,11 @@
 #include "glm/gtc/type_ptr.hpp"
 
 #include "Global.h"
+#include "Editable.h"
 
 namespace Object {
 
-	class Camera : public Object {
+	class Camera : public Editable {
 	public:
 		constexpr static double mouseSensitivity = 0.005f;
 		constexpr static float moveSensitivity = 1.0f;
@@ -22,7 +23,7 @@ namespace Object {
 		constexpr static float zoomSensitivity = 0.1f;
 
 		Camera(glm::vec3 p, bool l = false)
-		: Object(p, { 0.0f, 0.0f, 0.0f }), panning(false), lookAt(false), prevCursor(Global::Cursor), locked(l) {
+		: Editable(p, { 0.0f, 0.0f, 0.0f }), panning(false), lookAt(false), prevCursor(Global::Cursor), locked(l) {
 			if (!locked) {
 				this->attachEventHandlers();
 			}

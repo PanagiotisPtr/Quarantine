@@ -112,6 +112,21 @@ namespace Object {
 				this->selected = false;
 			}
 		}
+
+		void moveAndPlaceObject(glm::vec3 changeVector) {
+			this->pos = glm::translate(this->getTransform(), changeVector) * glm::vec4{ 0.0f,0.0f,0.0f,1.0f };
+			this->place();
+		}
+
+		void scaleAndPlaceObject(glm::vec3 changeVector) {
+			this->scale += changeVector;
+			this->place();
+		}
+
+		void rotateAndPlaceObject(glm::vec3 changeVector) {
+			this->rot += changeVector;
+			this->place();
+		}
 	protected:
 		Axis axis;
 		glm::vec3 prevPos;

@@ -20,9 +20,9 @@ namespace Screen {
 
 	class Screen {
 	public:
-		using ObjectPtr = std::unique_ptr<Object::Object>;
+		using EditableObjectPtr = std::unique_ptr<Object::Editable>;
 
-		Screen() {}
+		Screen(): sceneSetupComplete(false){}
 
 		// has to be called after construction is finished
 		// that's why a factory is used to create screens
@@ -48,6 +48,11 @@ namespace Screen {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 			glViewport(0, 0, windowWidth, windowHeight);
 
+			if (!sceneSetupComplete) {
+				this->setupScene();
+				sceneSetupComplete = true;
+			}
+
 			// make sure that the first object is always the camera
 			// draw non-selected objects first
 			glStencilMask(0x00);
@@ -69,17 +74,19 @@ namespace Screen {
 			}
 		}
 
-		std::vector<ObjectPtr>& getObjects() { return this->objects; }
+		std::vector<EditableObjectPtr>& getObjects() { return this->objects; }
 
 		void deleteObject(unsigned objectId) { deletionQueue.push(objectId); }
 	protected:
-		std::vector<ObjectPtr> objects;
+		std::vector<EditableObjectPtr> objects;
 		std::queue<ObjectClasses> objectsQueue;
 		std::queue<unsigned> deletionQueue;
 
 		virtual void update() = 0;
 
 		virtual void attachEventHandlers() = 0;
+
+		virtual void setupScene() = 0;
 
 		void createQueuedObjects() {
 			while (!this->objectsQueue.empty()) {
@@ -100,7 +107,7 @@ namespace Screen {
 					this->objects.emplace_back(new Object::Light({ 0, 0, 0 }));
 					break;
 				case ObjectClasses::IMAGE:
-					this->objects.emplace_back(new Object::Image({ 0, 0, 0 }, "assets/mainScreen.bmp"));
+					this->objects.emplace_back(new Object::Image({ 0,0,0 }, "assets/mainScreen.bmp"));
 					break;
 				}
 				this->objectsQueue.pop();
@@ -119,6 +126,8 @@ namespace Screen {
 				}), std::end(this->objects));
 			}
 		}
+	private:
+		bool sceneSetupComplete;
 	};
 
 } // namespace screen

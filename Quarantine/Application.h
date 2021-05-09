@@ -129,7 +129,6 @@ namespace Application {
 				float pixel[4];
 				int flippedY = this->windowHeight - (int)Global::Cursor.y;
 				glfwGetCursorPos(this->window, &Global::Cursor.x, &Global::Cursor.y);
-				std::cout << "CursorX: " << Global::Cursor.x << "\tCursorY: " << Global::Cursor.y << std::endl;
 
 				if (!this->multiSelectOn) {
 					for (auto& o : this->screen->getObjects()) {
