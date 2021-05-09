@@ -113,6 +113,9 @@
     <ClInclude Include="ScreenFactory.h">
       <Filter>Source Files\Screen</Filter>
     </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\sprite_dice.bmp">

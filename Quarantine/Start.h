@@ -2,6 +2,15 @@
 #define SCREEN_START_H
 
 #include "Screen.h"
+#include "Object.h"
+#include "Camera.h"
+#include "Plane.h"
+#include "Image.h"
+#include "Cube.h"
+#include "Sphere.h"
+#include "Cylinder.h"
+#include "Button.h"
+#include "Light.h"
 
 namespace Screen {
 
@@ -37,7 +46,7 @@ namespace Screen {
 
 				if (e.key == GLFW_KEY_X && e.action == GLFW_PRESS) {
 					for (auto& o : this->objects) {
-						if (o->isSeleted() && !o->isChanging()) this->deleteObject(o->getObjectId());
+						if (o->isSeleted() && !o->isChanging() && !o->isLocked()) this->deleteObject(o->getObjectId());
 					}
 				}
 			}, Global::ObjectId);
@@ -45,11 +54,22 @@ namespace Screen {
 
 		void setupScene() override {
 			this->objects.emplace_back(new Object::Camera({ 0, 0.25, -2 }, false));
-			this->objects.emplace_back(new Object::Image({ 0,0,0 }, "assets/mainScreen.bmp"));
 
+			// setup background
+			this->objects.emplace_back(new Object::Image({ 0,0,0 }, "assets/mainScreen.bmp"));
 			this->objects.back()->moveAndPlaceObject({ 0.0f,0.5f,0.0 });
 			this->objects.back()->scaleAndPlaceObject({ -0.4f,-0.4f,-0.4f });
 			this->objects.back()->scaleAndPlaceObject({ 0.65f,0.1f,0.65f });
+
+			// setup 'play' button
+			this->objects.emplace_back(new Object::Button({ 0,0,0 }, "assets/play.bmp", []() { printf("play\n"); }));
+			this->objects.back()->moveAndPlaceObject({ 0.0f,0.8f,-0.01f });
+			this->objects.back()->scaleAndPlaceObject({ -0.7f,-0.9f,-0.7f });
+
+			// setup 'exit' button
+			this->objects.emplace_back(new Object::Button({ 0,0,0 }, "assets/exit.bmp", []() { printf("exit\n"); }));
+			this->objects.back()->moveAndPlaceObject({ 0.0f,0.3f,-0.01f });
+			this->objects.back()->scaleAndPlaceObject({ -0.7f,-0.9f,-0.7f });
 		}
 	};
 

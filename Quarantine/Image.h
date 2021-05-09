@@ -22,9 +22,13 @@ namespace Object {
 	class Image : public Editable {
 	public:
 		Image(glm::vec3 p, const char* textureLocation)
-		: Editable(p, { 0.0f, 0.0f, 0.0f }), texture(Utility::ImageLoader::loadImage(textureLocation)) {}
+		: Editable(p, { 0.0f, 0.0f, 0.0f }), texture(Utility::ImageLoader::loadImage(textureLocation)) {
+			this->lock();
+		}
 
 	protected:
+		void drawOutline() const override {}
+
 		void drawShape() const override {
 			glBegin(GL_TRIANGLES);
 			
@@ -97,18 +101,18 @@ namespace Object {
 
 			// images are renderd on both sides
 
-			glTexCoord2f(1.0f, 1.0f);
+			glTexCoord2f(0.0f, 1.0f);
 			glVertex3f(1.0f, 1.0f, 0.0f);
-			glTexCoord2f(1.0f, 0.0f);
-			glVertex3f(1.0f, -1.0f, 0.0f);
 			glTexCoord2f(0.0f, 0.0f);
+			glVertex3f(1.0f, -1.0f, 0.0f);
+			glTexCoord2f(1.0f, 0.0f);
 			glVertex3f(-1.0f, -1.0f, 0.0f);
 
-			glTexCoord2f(0.0f, 0.0f);
+			glTexCoord2f(1.0f, 0.0f);
 			glVertex3f(-1.0f, -1.0f, 0.0f);
-			glTexCoord2f(0.0f, 1.0f);
-			glVertex3f(-1.0f, 1.0f, 0.0f);
 			glTexCoord2f(1.0f, 1.0f);
+			glVertex3f(-1.0f, 1.0f, 0.0f);
+			glTexCoord2f(0.0f, 1.0f);
 			glVertex3f(1.0f, 1.0f, 0.0f);
 
 			glEnd();

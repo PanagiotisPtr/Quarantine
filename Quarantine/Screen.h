@@ -12,6 +12,7 @@
 #include "Cube.h"
 #include "Sphere.h"
 #include "Cylinder.h"
+#include "Button.h"
 #include "Light.h"
 
 #include "Global.h"

@@ -161,6 +161,7 @@
     <ClCompile Include="Start.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Colourful.h" />
     <ClInclude Include="ColourIdGenerator.h" />

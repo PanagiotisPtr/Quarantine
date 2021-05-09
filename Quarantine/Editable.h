@@ -21,9 +21,13 @@ namespace Object {
 
 		Editable(glm::vec3 p, glm::vec3 c)
 			: Object(p, c), prevPos(p), prevRot({ 0.0f, 0.0f, 0.0f }), prevScale(scale),
-			prevCursor(Global::Cursor), axis(Axis::NONE) {
+			prevCursor(Global::Cursor), axis(Axis::NONE), locked(false) {
 			Global::EventBus.addEventHandler<Event::CursorPos>([this](const Event::Base& baseEvent) -> void {
 				const Event::CursorPos& e = static_cast<const Event::CursorPos&>(baseEvent);
+
+				if (this->isLocked()) {
+					return;
+				}
 
 				const glm::dvec2 newPos{ e.xpos, e.ypos };
 				const glm::dvec2 diff = newPos - this->prevCursor;
@@ -60,6 +64,10 @@ namespace Object {
 
 			Global::EventBus.addEventHandler<Event::KeyPress>([this](const Event::Base& baseEvent) -> void {
 				const Event::KeyPress& e = static_cast<const Event::KeyPress&>(baseEvent);
+
+				if (this->isLocked()) {
+					return;
+				}
 
 				if (e.action == GLFW_REPEAT) { return; }
 				if (this->selected == false) { return; }
@@ -127,12 +135,19 @@ namespace Object {
 			this->rot += changeVector;
 			this->place();
 		}
+
+		bool isLocked() { return this->locked; }
+
 	protected:
 		Axis axis;
 		glm::vec3 prevPos;
 		glm::vec3 prevRot;
 		glm::vec3 prevScale;
 		glm::dvec2 prevCursor;
+
+		void lock() { this->locked = true; }
+		
+		void unlock() { this->locked = false; }
 
 		void place() {
 			this->prevPos = this->pos;
@@ -187,6 +202,8 @@ namespace Object {
 
 			return out;
 		}
+	private:
+		bool locked;
 	};
 
 } // namespace Object

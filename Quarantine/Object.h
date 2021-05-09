@@ -65,8 +65,8 @@ namespace Object {
 			}
 		}
 
-		void toggleSelect() { this->selected = !this->selected; }
-		void select() { this->selected = true; }
+		void toggleSelect() { if (this->selected) this->select(); else this->deselect(); }
+		virtual void select() { this->selected = true; }
 		bool isSeleted() const { return this->selected; }
 		virtual void deselect() { this->selected = false; }
 		virtual bool isChanging() const { return this->moving || this->rotating || this->scaling; }
