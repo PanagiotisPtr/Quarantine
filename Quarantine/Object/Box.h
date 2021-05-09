@@ -37,7 +37,7 @@ namespace Object {
 		}
 
 	protected:
-		std::string objectName() const { return "TREE"; }
+		std::string objectName() const { return "BOX"; }
 	};
 
 } // namespace Object

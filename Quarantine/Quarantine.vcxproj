@@ -172,6 +172,7 @@
     <ClInclude Include="Event\Event.h" />
     <ClInclude Include="Global\Global.h" />
     <ClInclude Include="Object\Editable.h" />
+    <ClInclude Include="Object\Grid.h" />
     <ClInclude Include="Object\Image.h" />
     <ClInclude Include="Object\Pyramid.h" />
     <ClInclude Include="Object\Tree.h" />

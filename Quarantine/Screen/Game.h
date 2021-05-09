@@ -8,6 +8,7 @@
 #include "../Object/Plane.h"
 #include "../Object/Tree.h"
 #include "../Object/Box.h"
+#include "../Object/Grid.h"
 #include "../Object/Image.h"
 #include "../Object/Cube.h"
 #include "../Object/Sphere.h"
@@ -59,7 +60,7 @@ namespace Screen {
 			this->objects.emplace_back(new Object::Camera({ 0, 0.25, -2 }, false));
 
 			// setup background
-			this->objects.emplace_back(new Object::Box({ 0,0,0 }));
+			this->objects.emplace_back(new Object::Grid({ 0,0,0 }, 10, 10));
 
 		}
 	};
