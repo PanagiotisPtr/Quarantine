@@ -131,6 +131,12 @@
     <ClInclude Include="Object\Composite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\sprite_dice.bmp">

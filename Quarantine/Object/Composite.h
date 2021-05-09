@@ -11,23 +11,7 @@ namespace Object {
 	public:
 		using EditableObjectPtr = std::unique_ptr<Editable>;
 
-		Composite(glm::vec3 p) : Editable(p, { 0.0f,0.0f,0.0f }) {
-			this->objects.emplace_back(new Pyramid({ 0,0,0 }, { 0.0f,1.0f,0.0f }));
-			this->objects.back()->moveAndPlaceObject({ 0.0f,0.0f,0.0 });
-
-			this->objects.emplace_back(new Pyramid({ 0,0,0 }, { 0.0f,1.0f,0.0f }));
-			this->objects.back()->moveAndPlaceObject({ 0.0f,0.5f,0.0 });
-			this->objects.back()->scaleAndPlaceObject({ -0.25f,-0.25f,-0.25f });
-
-			this->objects.emplace_back(new Pyramid({ 0,0,0 }, { 0.0f,1.0f,0.0f }));
-			this->objects.back()->moveAndPlaceObject({ 0.0f, 1.0f,0.0 });
-			this->objects.back()->scaleAndPlaceObject({ -0.5f,-0.5f,-0.5f });
-
-			this->objects.emplace_back(new Cylinder({ 0,0,0 }, { 1.0f,0.3f,0.0f }));
-			this->objects.back()->scaleAndPlaceObject({ -0.85f,-0.85f,-0.85f });
-			this->objects.back()->scaleAndPlaceObject({ 0.0f,0.65f,0.0f });
-			this->objects.back()->moveAndPlaceObject({ 0.0f, -0.51f,0.0 });
-		}
+		Composite(glm::vec3 p) : Editable(p, { 0.0f,0.0f,0.0f }) {}
 
 		virtual void drawShape() const override {
 			for (auto& o : this->objects) {
@@ -49,7 +33,7 @@ namespace Object {
 		}
 
 		std::string objectName() const { return "COMPOSITE"; }
-	private:
+	protected:
 		std::vector<EditableObjectPtr> objects;
 	};
 

@@ -162,6 +162,7 @@
     <ClCompile Include="Screen\Start.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Object\Box.h" />
     <ClInclude Include="Object\Button.h" />
     <ClInclude Include="Object\Camera.h" />
     <ClInclude Include="Colour\ColourIdGenerator.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Object\Editable.h" />
     <ClInclude Include="Object\Image.h" />
     <ClInclude Include="Object\Pyramid.h" />
+    <ClInclude Include="Object\Tree.h" />
     <ClInclude Include="Screen\Exit.h" />
     <ClInclude Include="Screen\Game.h" />
     <ClInclude Include="Screen\ScreenIdGenerator.h" />
