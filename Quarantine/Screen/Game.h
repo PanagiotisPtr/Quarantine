@@ -1,14 +1,12 @@
-#ifndef SCREEN_START_H
-#define SCREEN_START_H
+#ifndef SCREEN_GAME_H
+#define SCREEN_GAME_H
 
 #include "Screen.h"
-#include "ScreenFactory.h"
-#include "Game.h"
-#include "Exit.h"
 
 #include "../Object/Object.h"
 #include "../Object/Camera.h"
 #include "../Object/Plane.h"
+#include "../Object/Composite.h"
 #include "../Object/Image.h"
 #include "../Object/Cube.h"
 #include "../Object/Sphere.h"
@@ -18,9 +16,9 @@
 
 namespace Screen {
 
-	class Start : public Screen {
+	class Game : public Screen {
 	public:
-		Start(ScreenTransitionFunc t) : Screen(t) {}
+		Game(ScreenTransitionFunc t) : Screen(t) {}
 	protected:
 		void update() override {}
 
@@ -29,7 +27,7 @@ namespace Screen {
 				const Event::KeyPress& e = static_cast<const Event::KeyPress&>(baseEvent);
 
 				if (e.key == GLFW_KEY_1 && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::IMAGE);
+					this->objectsQueue.push(ObjectClasses::PYRAMID);
 				}
 				if (e.key == GLFW_KEY_2 && e.action == GLFW_PRESS) {
 					this->objectsQueue.push(ObjectClasses::CUBE);
@@ -57,27 +55,11 @@ namespace Screen {
 		}
 
 		void setupScene() override {
-			this->objects.emplace_back(new Object::Camera({ 0, 0.25, -2 }, true));
+			this->objects.emplace_back(new Object::Camera({ 0, 0.25, -2 }, false));
 
 			// setup background
-			this->objects.emplace_back(new Object::Image({ 0,0,0 }, "assets/mainScreen.bmp"));
-			this->objects.back()->moveAndPlaceObject({ 0.0f,0.5f,0.0 });
-			this->objects.back()->scaleAndPlaceObject({ -0.4f,-0.4f,-0.4f });
-			this->objects.back()->scaleAndPlaceObject({ 0.65f,0.1f,0.65f });
+			this->objects.emplace_back(new Object::Composite({ 0,0,0 }));
 
-			// setup 'play' button
-			this->objects.emplace_back(new Object::Button({ 0,0,0 }, "assets/play.bmp", [this]() {
-				this->transitionScreen(ScreenFactory<Game>::createPointer(this->screenTransitionFunction));
-			}));
-			this->objects.back()->moveAndPlaceObject({ 0.0f,0.8f,-0.01f });
-			this->objects.back()->scaleAndPlaceObject({ -0.7f,-0.9f,-0.7f });
-
-			// setup 'exit' button
-			this->objects.emplace_back(new Object::Button({ 0,0,0 }, "assets/exit.bmp", [this]() {
-				this->transitionScreen(ScreenFactory<Exit>::createPointer(this->screenTransitionFunction));
-			}));
-			this->objects.back()->moveAndPlaceObject({ 0.0f,0.3f,-0.01f });
-			this->objects.back()->scaleAndPlaceObject({ -0.7f,-0.9f,-0.7f });
 		}
 	};
 

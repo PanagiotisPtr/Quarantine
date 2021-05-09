@@ -25,7 +25,8 @@ enum class ObjectClasses {
 	CYLINDER,
 	CUBE,
 	LIGHT,
-	IMAGE
+	IMAGE,
+	PYRAMID
 };
 
 namespace Object {
@@ -43,6 +44,11 @@ namespace Object {
 			if (this->selected) {
 				this->drawOutline();
 			}
+		}
+
+		virtual void drawWithoutOutline() const{
+			glColor3f(this->colour.r, this->colour.g, this->colour.b);
+			this->drawObject();
 		}
 
 		virtual void drawWithId() const {
@@ -63,6 +69,18 @@ namespace Object {
 					stream << mat[i][j] << (j == 3 ? '\n' : ' ');
 				}
 			}
+		}
+
+		virtual void drawWithColour(glm::vec3 v) {
+			ColourIdGenerator::ColourId c = { v.x,v.y,v.z };
+			glColor3f(c.r, c.g, c.b);
+			glMatrixMode(GL_MODELVIEW);
+			glPushMatrix();
+			glMultMatrixf(glm::value_ptr(this->getTransform()));
+
+			this->drawShape();
+
+			glPopMatrix();
 		}
 
 		void toggleSelect() { if (this->selected) this->select(); else this->deselect(); }

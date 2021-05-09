@@ -15,6 +15,7 @@ namespace Global {
 
 extern Event::EventBus EventBus;
 extern glm::dvec2 Cursor;
+extern GLFWwindow* Window;
 extern unsigned ObjectId;
 
 } // namespace Global

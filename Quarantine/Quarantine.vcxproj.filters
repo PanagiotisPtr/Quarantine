@@ -60,6 +60,9 @@
     <ClCompile Include="Screen\Start.h">
       <Filter>Source Files\Screen</Filter>
     </ClCompile>
+    <ClCompile Include="Screen\ScreenIdGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Colour\ColourIdGenerator.h">
@@ -75,9 +78,6 @@
       <Filter>Source Files\Object</Filter>
     </ClInclude>
     <ClInclude Include="Object\Camera.h">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Colourful.h">
       <Filter>Source Files\Object</Filter>
     </ClInclude>
     <ClInclude Include="Object\Cube.h">
@@ -115,6 +115,21 @@
     </ClInclude>
     <ClInclude Include="Utility\ImageLoader.h">
       <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen\Exit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Pyramid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen\ScreenIdGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Composite.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

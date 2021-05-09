@@ -61,8 +61,8 @@ namespace Application {
 
 			const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
-			this->window = glfwCreateWindow(mode->width, mode->height, "Scene Builder", NULL, NULL);
-			if (!this->window) {
+			Global::Window = glfwCreateWindow(mode->width, mode->height, "Scene Builder", NULL, NULL);
+			if (!Global::Window) {
 				glfwTerminate();
 				throw std::exception("GLFW failed to create window.");
 			}
@@ -73,7 +73,7 @@ namespace Application {
 
 			this->enqueueScreen(Screen::ScreenFactory<Screen::Start>::createPointer(this->getScreenTransitionFunc()));
 
-			glfwMakeContextCurrent(this->window);
+			glfwMakeContextCurrent(Global::Window);
 			glClearColor(0.4f, 0.5f, 0.6f, 1.0f);
 
 			this->linkEvents();
@@ -94,7 +94,7 @@ namespace Application {
 
 				float pixel[4];
 				int flippedY = this->windowHeight - (int)Global::Cursor.y;
-				glfwGetCursorPos(this->window, &Global::Cursor.x, &Global::Cursor.y);
+				glfwGetCursorPos(Global::Window, &Global::Cursor.x, &Global::Cursor.y);
 
 				if (!this->multiSelectOn) {
 					for (auto& o : this->getCurrentScreen()->getObjects()) {
@@ -124,7 +124,7 @@ namespace Application {
 			}, Global::ObjectId);
 
 			Global::EventBus.addEventHandler<Event::CursorPos>([this](const Event::Base& baseEvent) -> void {
-				glfwGetCursorPos(this->window, &Global::Cursor.x, &Global::Cursor.y);
+				glfwGetCursorPos(Global::Window, &Global::Cursor.x, &Global::Cursor.y);
 			}, Global::ObjectId);
 
 			Global::EventBus.addEventHandler<Event::KeyPress>([this](const Event::Base& baseEvent) -> void {
@@ -153,14 +153,14 @@ namespace Application {
 			glLoadIdentity();
 			glTranslatef(0.0f, 0.0f, 0.4f);
 			glPopMatrix();
-			glfwGetCursorPos(this->window, &Global::Cursor.x, &Global::Cursor.y);
+			glfwGetCursorPos(Global::Window, &Global::Cursor.x, &Global::Cursor.y);
 		}
 
 		void start() {
 			GLfloat global_ambient[] = { 0.6f, 0.6f, 0.6f, 1.0f };
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
 
-			while (!glfwWindowShouldClose(this->window))
+			while (!glfwWindowShouldClose(Global::Window))
 			{
 				if (this->screenQueue.size() > 1) {
 					this->clearScreenQueue();
@@ -168,7 +168,7 @@ namespace Application {
 
 				this->getCurrentScreen()->draw(this->windowWidth, this->windowHeight);
 
-				glfwSwapBuffers(this->window);
+				glfwSwapBuffers(Global::Window);
 				glfwPollEvents();
 			}
 			glfwTerminate();
@@ -184,7 +184,6 @@ namespace Application {
 			this->screenQueue.emplace(screen);
 		}
 	private:
-		GLFWwindow* window;
 		std::queue<ScreenPtr> screenQueue;
 		int windowWidth;
 		int windowHeight;
@@ -208,7 +207,7 @@ namespace Application {
 		}
 
 		void linkEvents() {
-			glfwSetFramebufferSizeCallback(this->window, [](GLFWwindow* window, int width, int height) {
+			glfwSetFramebufferSizeCallback(Global::Window, [](GLFWwindow* window, int width, int height) {
 				Global::EventBus.pushEvent(Event::WindowResize(
 					window,
 					width,
@@ -216,7 +215,7 @@ namespace Application {
 				));
 			});
 
-			glfwSetKeyCallback(this->window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+			glfwSetKeyCallback(Global::Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
 				Global::EventBus.pushEvent(Event::KeyPress(
 					window,
 					key,
@@ -226,7 +225,7 @@ namespace Application {
 				));
 			});
 
-			glfwSetCursorPosCallback(this->window, [](GLFWwindow* window, double xpos, double ypos) {
+			glfwSetCursorPosCallback(Global::Window, [](GLFWwindow* window, double xpos, double ypos) {
 				Global::EventBus.pushEvent(Event::CursorPos(
 					window,
 					xpos,
@@ -234,7 +233,7 @@ namespace Application {
 				));
 			});
 
-			glfwSetMouseButtonCallback(this->window, [](GLFWwindow* window, int button, int action, int mods) {
+			glfwSetMouseButtonCallback(Global::Window, [](GLFWwindow* window, int button, int action, int mods) {
 				Global::EventBus.pushEvent(Event::MouseButton(
 					window,
 					button,
@@ -243,7 +242,7 @@ namespace Application {
 				));
 			});
 
-			glfwSetScrollCallback(this->window, [](GLFWwindow* window, double xoffset, double yoffset) {
+			glfwSetScrollCallback(Global::Window, [](GLFWwindow* window, double xoffset, double yoffset) {
 				Global::EventBus.pushEvent(Event::MouseScroll(
 					window,
 					xoffset,

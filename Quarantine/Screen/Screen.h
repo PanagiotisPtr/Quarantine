@@ -5,9 +5,12 @@
 #include <queue>
 #include <memory>
 
+#include "ScreenIdGenerator.h"
+
 #include "../Object/Object.h"
 #include "../Object/Camera.h"
 #include "../Object/Plane.h"
+#include "../Object/Pyramid.h"
 #include "../Object/Image.h"
 #include "../Object/Cube.h"
 #include "../Object/Sphere.h"
@@ -24,7 +27,8 @@ namespace Screen {
 		using EditableObjectPtr = std::unique_ptr<Object::Editable>;
 		using ScreenTransitionFunc = std::function<void(Screen*)>;
 
-		Screen(ScreenTransitionFunc t) : screenTransitionFunction(t), sceneSetupComplete(false) {}
+		Screen(ScreenTransitionFunc t)
+		: screenTransitionFunction(t), sceneSetupComplete(false), id(ScreenIdGenerator::getScreenId()) {}
 
 		// has to be called after construction is finished
 		// that's why a factory is used to create screens
@@ -86,6 +90,8 @@ namespace Screen {
 				Global::EventBus.detachHandlersForObject(o->getObjectId());
 				this->objects.pop_back();
 			}
+
+			Global::EventBus.detachHandlersForObject(this->getId());
 		}
 
 		void transitionScreen(Screen* screen) {
@@ -102,6 +108,8 @@ namespace Screen {
 		virtual void attachEventHandlers() = 0;
 
 		virtual void setupScene() = 0;
+
+		unsigned getId() { return this->id; }
 
 		void createQueuedObjects() {
 			while (!this->objectsQueue.empty()) {
@@ -124,6 +132,9 @@ namespace Screen {
 				case ObjectClasses::IMAGE:
 					this->objects.emplace_back(new Object::Image({ 0,0,0 }, "assets/mainScreen.bmp"));
 					break;
+				case ObjectClasses::PYRAMID:
+					this->objects.emplace_back(new Object::Pyramid({ 0,0,0 }, {0.0f, 1.0f, 0.0f }));
+					break;
 				}
 				this->objectsQueue.pop();
 			}
@@ -143,6 +154,7 @@ namespace Screen {
 		}
 	private:
 		bool sceneSetupComplete;
+		unsigned id;
 	};
 
 } // namespace screen

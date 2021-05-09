@@ -14,13 +14,13 @@
 #include "glm/gtx/string_cast.hpp"
 #include "glm/common.hpp"
 
-#include "Colourful.h"
+#include "Editable.h"
 
 namespace Object {
 
-	class Plane : public Colourful {
+	class Plane : public Editable {
 	public:
-		Plane(glm::vec3 p, glm::vec3 c) : Colourful(p, c) {}
+		Plane(glm::vec3 p, glm::vec3 c) : Editable(p, c) {}
 
 	protected:
 		void drawShape() const override {
