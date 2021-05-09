@@ -2,15 +2,16 @@
 #define SCREEN_START_H
 
 #include "Screen.h"
-#include "Object.h"
-#include "Camera.h"
-#include "Plane.h"
-#include "Image.h"
-#include "Cube.h"
-#include "Sphere.h"
-#include "Cylinder.h"
-#include "Button.h"
-#include "Light.h"
+
+#include "../Object/Object.h"
+#include "../Object/Camera.h"
+#include "../Object/Plane.h"
+#include "../Object/Image.h"
+#include "../Object/Cube.h"
+#include "../Object/Sphere.h"
+#include "../Object/Cylinder.h"
+#include "../Object/Button.h"
+#include "../Object/Light.h"
 
 namespace Screen {
 

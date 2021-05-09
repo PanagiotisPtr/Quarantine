@@ -15,7 +15,7 @@
 #include "glm/common.hpp"
 
 #include "Editable.h"
-#include "ImageLoader.h"
+#include "../Utility/ImageLoader.h"
 
 namespace Object {
 

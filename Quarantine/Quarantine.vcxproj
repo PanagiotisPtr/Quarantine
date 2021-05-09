@@ -152,33 +152,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application.h" />
-    <ClCompile Include="ColourIdGenerator.cpp" />
-    <ClCompile Include="EventBus.h" />
-    <ClCompile Include="Global.cpp" />
+    <ClCompile Include="Application\Application.h" />
+    <ClCompile Include="Colour\ColourIdGenerator.cpp" />
+    <ClCompile Include="Event\EventBus.h" />
+    <ClCompile Include="Global\Global.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="Start.h" />
+    <ClCompile Include="Object\Sphere.cpp" />
+    <ClCompile Include="Screen\Start.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Colourful.h" />
-    <ClInclude Include="ColourIdGenerator.h" />
-    <ClInclude Include="Cube.h" />
-    <ClInclude Include="Cylinder.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="Global.h" />
-    <ClInclude Include="Editable.h" />
-    <ClInclude Include="Image.h" />
-    <ClInclude Include="ImageLoader.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="Plane.h" />
-    <ClInclude Include="Screen.h" />
-    <ClInclude Include="ScreenFactory.h" />
-    <ClInclude Include="Sphere.h" />
-    <ClInclude Include="StringFormatter.h" />
+    <ClInclude Include="Object\Button.h" />
+    <ClInclude Include="Object\Camera.h" />
+    <ClInclude Include="Object\Colourful.h" />
+    <ClInclude Include="Colour\ColourIdGenerator.h" />
+    <ClInclude Include="Object\Cube.h" />
+    <ClInclude Include="Object\Cylinder.h" />
+    <ClInclude Include="Event\Event.h" />
+    <ClInclude Include="Global\Global.h" />
+    <ClInclude Include="Object\Editable.h" />
+    <ClInclude Include="Object\Image.h" />
+    <ClInclude Include="Utility\ImageLoader.h" />
+    <ClInclude Include="Object\Light.h" />
+    <ClInclude Include="Object\Object.h" />
+    <ClInclude Include="Object\Plane.h" />
+    <ClInclude Include="Screen\Screen.h" />
+    <ClInclude Include="Screen\ScreenFactory.h" />
+    <ClInclude Include="Object\Sphere.h" />
+    <ClInclude Include="Utility\StringFormatter.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\sprite_dice.bmp" />

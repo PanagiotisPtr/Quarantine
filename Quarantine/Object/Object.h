@@ -17,7 +17,7 @@
 #include "glm/gtx/string_cast.hpp"
 #include "glm/common.hpp"
 
-#include "ColourIdGenerator.h"
+#include "../Colour/ColourIdGenerator.h"
 
 enum class ObjectClasses {
 	SPHERE,

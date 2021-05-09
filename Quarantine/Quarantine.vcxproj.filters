@@ -42,79 +42,79 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Start.h">
-      <Filter>Source Files\Screen</Filter>
-    </ClCompile>
-    <ClCompile Include="EventBus.h">
-      <Filter>Source Files\Event</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.h">
-      <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="ColourIdGenerator.cpp">
+    <ClCompile Include="Colour\ColourIdGenerator.cpp">
       <Filter>Source Files\Colour</Filter>
     </ClCompile>
-    <ClCompile Include="Global.cpp">
+    <ClCompile Include="Application\Application.h">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Event\EventBus.h">
+      <Filter>Source Files\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="Global\Global.cpp">
       <Filter>Source Files\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Sphere.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen\Start.h">
+      <Filter>Source Files\Screen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Object.h">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Editable.h">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Cylinder.h">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Colourful.h">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Source Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Screen.h">
-      <Filter>Source Files\Screen</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Source Files\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="ColourIdGenerator.h">
+    <ClInclude Include="Colour\ColourIdGenerator.h">
       <Filter>Source Files\Colour</Filter>
     </ClInclude>
-    <ClInclude Include="Global.h">
+    <ClInclude Include="Event\Event.h">
+      <Filter>Source Files\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Global\Global.h">
       <Filter>Source Files\Global</Filter>
     </ClInclude>
-    <ClInclude Include="Image.h">
+    <ClInclude Include="Object\Button.h">
       <Filter>Source Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="ImageLoader.h">
-      <Filter>Source Files\Utility</Filter>
+    <ClInclude Include="Object\Camera.h">
+      <Filter>Source Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="StringFormatter.h">
-      <Filter>Source Files\Utility</Filter>
+    <ClInclude Include="Object\Colourful.h">
+      <Filter>Source Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="ScreenFactory.h">
+    <ClInclude Include="Object\Cube.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Cylinder.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Editable.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Image.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Light.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Object.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Plane.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Sphere.h">
+      <Filter>Source Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen\Screen.h">
       <Filter>Source Files\Screen</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Source Files\Object</Filter>
+    <ClInclude Include="Screen\ScreenFactory.h">
+      <Filter>Source Files\Screen</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\StringFormatter.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ImageLoader.h">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

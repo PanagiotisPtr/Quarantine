@@ -15,20 +15,24 @@
 #include <fstream>
 #include <string>
 
-#include "Object.h"
-#include "Sphere.h"
-#include "Plane.h"
-#include "Cube.h"
-#include "Cylinder.h"
-#include "Light.h"
-#include "Camera.h"
-#include "EventBus.h"
-#include "Event.h" 
-#include "Global.h"
+#include "../Object/Object.h"
+#include "../Object/Sphere.h"
+#include "../Object/Plane.h"
+#include "../Object/Cube.h"
+#include "../Object/Cylinder.h"
+#include "../Object/Light.h"
+#include "../Object/Camera.h"
 
-#include "Screen.h"
-#include "ScreenFactory.h"
-#include "Start.h"
+#include "../Event/EventBus.h"
+#include "../Event/Event.h" 
+
+#include "../Global/Global.h"
+
+#include "../Colour/ColourIdGenerator.h"
+
+#include "../Screen/Screen.h"
+#include "../Screen/ScreenFactory.h"
+#include "../Screen/Start.h"
 
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"

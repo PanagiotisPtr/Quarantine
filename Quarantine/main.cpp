@@ -1,9 +1,8 @@
  #include <iostream>
 #include <array>
 
-#include "Application.h"
-#include "Camera.h"
-#include "ColourIdGenerator.h"
+#include "Application/Application.h"
+#include "Colour/ColourIdGenerator.h"
 
 #define GLEW_STATIC
 

@@ -16,7 +16,7 @@
 #include "glm/common.hpp"
 
 #include "Editable.h"
-#include "Global.h"
+#include "../Global/Global.h"
 
 namespace Object {
 

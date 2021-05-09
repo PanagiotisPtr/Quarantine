@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-#include "Global.h"
+#include "../Global/Global.h"
 
 namespace Object {
 

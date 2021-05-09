@@ -7,8 +7,8 @@
 #include <queue>
 #include <memory>
 
-#include "Object.h"
-#include "EventBus.h"
+#include "../Object/Object.h"
+#include "../Event/EventBus.h"
 #include "glm/mat4x4.hpp"
 
 namespace Global {

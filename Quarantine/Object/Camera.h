@@ -10,7 +10,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "Global.h"
+#include "../Global/Global.h"
 #include "Editable.h"
 
 namespace Object {
