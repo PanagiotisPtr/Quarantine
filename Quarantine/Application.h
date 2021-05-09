@@ -27,6 +27,7 @@
 #include "Global.h"
 
 #include "Screen.h"
+#include "ScreenFactory.h"
 #include "Start.h"
 
 #include "GL/glew.h"
@@ -43,7 +44,7 @@ namespace Application {
 	public:
 		using SreenPtr = std::unique_ptr<Screen::Screen>;
 
-		Application() : screen(new Screen::Start()) {
+		Application() : screen(Screen::ScreenFactory<Screen::Start>::createPointer()) {
 			if (!glfwInit()) {
 				throw std::exception("GLFW initialisation failed.");
 			}

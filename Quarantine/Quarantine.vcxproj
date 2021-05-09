@@ -175,6 +175,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="ScreenFactory.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="StringFormatter.h" />
   </ItemGroup>

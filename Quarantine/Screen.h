@@ -22,36 +22,13 @@ namespace Screen {
 	public:
 		using ObjectPtr = std::unique_ptr<Object::Object>;
 
-		Screen() {
-			Global::EventBus.addEventHandler<Event::KeyPress>([this](const Event::Base& baseEvent) -> void {
-				const Event::KeyPress& e = static_cast<const Event::KeyPress&>(baseEvent);
+		Screen() {}
 
-				if (e.key == GLFW_KEY_1 && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::IMAGE);
-				}
-				if (e.key == GLFW_KEY_2 && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::CUBE);
-				}
-				if (e.key == GLFW_KEY_3 && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::SPHERE);
-				}
-				if (e.key == GLFW_KEY_4 && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::CYLINDER);
-				}
-				if (e.key == GLFW_KEY_L && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::LIGHT);
-				}
-			}, Global::ObjectId);
-
-			Global::EventBus.addEventHandler<Event::KeyPress>([this](const Event::Base& baseEvent) -> void {
-				const Event::KeyPress& e = static_cast<const Event::KeyPress&>(baseEvent);
-
-				if (e.key == GLFW_KEY_X && e.action == GLFW_PRESS) {
-					for (auto& o : this->objects) {
-						if (o->isSeleted() && !o->isChanging()) this->deleteObject(o->getObjectId());
-					}
-				}
-			}, Global::ObjectId);
+		// has to be called after construction is finished
+		// that's why a factory is used to create screens
+		// to abstract away the need to call init() every time
+		void init() {
+			this->attachEventHandlers();
 		}
 
 		void draw(int windowWidth, int windowHeight) {
@@ -101,6 +78,8 @@ namespace Screen {
 		std::queue<unsigned> deletionQueue;
 
 		virtual void update() = 0;
+
+		virtual void attachEventHandlers() = 0;
 
 		void createQueuedObjects() {
 			while (!this->objectsQueue.empty()) {
