@@ -16,7 +16,7 @@ namespace Screen {
 
 	class Start : public Screen {
 	public:
-		Start() : Screen() {}
+		Start(ScreenTransitionFunc t) : Screen(t) {}
 	protected:
 		void update() override {}
 

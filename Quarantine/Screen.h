@@ -22,8 +22,9 @@ namespace Screen {
 	class Screen {
 	public:
 		using EditableObjectPtr = std::unique_ptr<Object::Editable>;
+		using ScreenTransitionFunc = std::function<void(Screen*)>;
 
-		Screen(): sceneSetupComplete(false){}
+		Screen(ScreenTransitionFunc t) : screenTransitionFunction(t), sceneSetupComplete(false) {}
 
 		// has to be called after construction is finished
 		// that's why a factory is used to create screens
@@ -78,10 +79,23 @@ namespace Screen {
 		std::vector<EditableObjectPtr>& getObjects() { return this->objects; }
 
 		void deleteObject(unsigned objectId) { deletionQueue.push(objectId); }
+
+		void clearScreen() {
+			while (this->objects.size()) {
+				auto& o = this->objects.back();
+				Global::EventBus.detachHandlersForObject(o->getObjectId());
+				this->objects.pop_back();
+			}
+		}
+
+		void transitionScreen(Screen* screen) {
+			this->screenTransitionFunction(screen);
+		}
 	protected:
 		std::vector<EditableObjectPtr> objects;
 		std::queue<ObjectClasses> objectsQueue;
 		std::queue<unsigned> deletionQueue;
+		ScreenTransitionFunc screenTransitionFunction;
 
 		virtual void update() = 0;
 

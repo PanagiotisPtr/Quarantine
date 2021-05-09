@@ -42,9 +42,10 @@ namespace Application {
 
 	class Application {
 	public:
-		using SreenPtr = std::unique_ptr<Screen::Screen>;
+		using ScreenPtr = std::unique_ptr<Screen::Screen>;
+		using ScreenTransitionFunc = std::function<void(Screen::Screen*)>;
 
-		Application() : screen(Screen::ScreenFactory<Screen::Start>::createPointer()) {
+		Application() {
 			if (!glfwInit()) {
 				throw std::exception("GLFW initialisation failed.");
 			}
@@ -66,51 +67,12 @@ namespace Application {
 			this->windowHeight = mode->height;
 			this->multiSelectOn = false;
 
+			this->enqueueScreen(Screen::ScreenFactory<Screen::Start>::createPointer(this->getScreenTransitionFunc()));
+
 			glfwMakeContextCurrent(this->window);
 			glClearColor(0.4f, 0.5f, 0.6f, 1.0f);
 
-			glfwSetFramebufferSizeCallback(this->window, [](GLFWwindow* window, int width, int height) {
-				Global::EventBus.pushEvent(Event::WindowResize(
-					window,
-					width,
-					height
-				));
-			});
-
-			glfwSetKeyCallback(this->window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-				Global::EventBus.pushEvent(Event::KeyPress(
-					window,
-					key,
-					scancode,
-					action,
-					mods
-				));
-			});
-
-			glfwSetCursorPosCallback(this->window, [](GLFWwindow* window, double xpos, double ypos) {
-				Global::EventBus.pushEvent(Event::CursorPos(
-					window,
-					xpos,
-					ypos
-				));
-			});
-
-			glfwSetMouseButtonCallback(this->window, [](GLFWwindow* window, int button, int action, int mods) {
-				Global::EventBus.pushEvent(Event::MouseButton(
-					window,
-					button,
-					action,
-					mods
-				));
-			});
-
-			glfwSetScrollCallback(this->window, [](GLFWwindow* window, double xoffset, double yoffset) {
-				Global::EventBus.pushEvent(Event::MouseScroll(
-					window,
-					xoffset,
-					yoffset
-				));
-			});
+			this->linkEvents();
 
 			Global::EventBus.addEventHandler<Event::WindowResize>([this](const Event::Base& baseEvent) -> void {
 				const Event::WindowResize& e = static_cast<const Event::WindowResize&>(baseEvent);
@@ -131,7 +93,7 @@ namespace Application {
 				glfwGetCursorPos(this->window, &Global::Cursor.x, &Global::Cursor.y);
 
 				if (!this->multiSelectOn) {
-					for (auto& o : this->screen->getObjects()) {
+					for (auto& o : this->getCurrentScreen()->getObjects()) {
 						o->deselect();
 					}
 				}
@@ -139,13 +101,13 @@ namespace Application {
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 				glViewport(0, 0, this->windowWidth, this->windowHeight);
 				// make sure that the first object is always the camera
-				for (const auto& o : this->screen->getObjects()) {
+				for (const auto& o : this->getCurrentScreen()->getObjects()) {
 					o->drawWithId();
 				}
 				glReadPixels((int)Global::Cursor.x, flippedY, 1, 1, GL_RGBA, GL_FLOAT, &pixel);
 				for (int i = 0; i < 4; i++) pixel[i] = this->roundToTwoDecimals(pixel[i]);
 
-				for (auto& o : this->screen->getObjects()) {
+				for (auto& o : this->getCurrentScreen()->getObjects()) {
 					if (o->getObjectId() == ColourIdGenerator::decodeId({ pixel[0], pixel[1], pixel[2] })) {
 						o->select();
 					}
@@ -196,16 +158,30 @@ namespace Application {
 
 			while (!glfwWindowShouldClose(this->window))
 			{
-				this->screen->draw(this->windowWidth, this->windowHeight);
+				if (this->screenQueue.size() > 1) {
+					this->clearScreenQueue();
+				}
+
+				this->getCurrentScreen()->draw(this->windowWidth, this->windowHeight);
 
 				glfwSwapBuffers(this->window);
 				glfwPollEvents();
 			}
 			glfwTerminate();
 		}
+
+		ScreenTransitionFunc getScreenTransitionFunc() {
+			return [this](Screen::Screen* screen) -> void {
+				this->enqueueScreen(screen);
+			};
+		}
+
+		void enqueueScreen(Screen::Screen* screen) {
+			this->screenQueue.emplace(screen);
+		}
 	private:
 		GLFWwindow* window;
-		SreenPtr screen;
+		std::queue<ScreenPtr> screenQueue;
 		int windowWidth;
 		int windowHeight;
 		bool multiSelectOn;
@@ -214,6 +190,62 @@ namespace Application {
 			v += 0.005f;
 
 			return std::trunc(100 * v) / 100;
+		}
+
+		ScreenPtr& getCurrentScreen() {
+			return this->screenQueue.front();
+		}
+
+		void clearScreenQueue() {
+			while (this->screenQueue.size() > 1) {
+				this->screenQueue.front()->clearScreen();
+				this->screenQueue.pop();
+			}
+		}
+
+		void linkEvents() {
+			glfwSetFramebufferSizeCallback(this->window, [](GLFWwindow* window, int width, int height) {
+				Global::EventBus.pushEvent(Event::WindowResize(
+					window,
+					width,
+					height
+				));
+			});
+
+			glfwSetKeyCallback(this->window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+				Global::EventBus.pushEvent(Event::KeyPress(
+					window,
+					key,
+					scancode,
+					action,
+					mods
+				));
+			});
+
+			glfwSetCursorPosCallback(this->window, [](GLFWwindow* window, double xpos, double ypos) {
+				Global::EventBus.pushEvent(Event::CursorPos(
+					window,
+					xpos,
+					ypos
+				));
+			});
+
+			glfwSetMouseButtonCallback(this->window, [](GLFWwindow* window, int button, int action, int mods) {
+				Global::EventBus.pushEvent(Event::MouseButton(
+					window,
+					button,
+					action,
+					mods
+				));
+			});
+
+			glfwSetScrollCallback(this->window, [](GLFWwindow* window, double xoffset, double yoffset) {
+				Global::EventBus.pushEvent(Event::MouseScroll(
+					window,
+					xoffset,
+					yoffset
+				));
+			});
 		}
 	};
 
