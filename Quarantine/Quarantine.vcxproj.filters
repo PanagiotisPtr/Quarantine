@@ -143,10 +143,16 @@
     <ClInclude Include="Object\ObjectFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Level\Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\sprite_dice.bmp">
       <Filter>Resource Files\assets</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\levels\level_1.map" />
   </ItemGroup>
 </Project>

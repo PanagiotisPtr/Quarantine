@@ -162,6 +162,7 @@
     <ClCompile Include="Screen\Start.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Level\Level.h" />
     <ClInclude Include="Object\Box.h" />
     <ClInclude Include="Object\Button.h" />
     <ClInclude Include="Object\Camera.h" />
@@ -191,6 +192,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\sprite_dice.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\levels\level_1.map" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

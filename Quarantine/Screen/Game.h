@@ -3,6 +3,8 @@
 
 #include "Screen.h"
 
+#include "../Level/Level.h"
+
 #include "../Object/Object.h"
 #include "../Object/ObjectFactory.h"
 #include "../Object/Camera.h"
@@ -60,13 +62,15 @@ namespace Screen {
 		}
 
 		void setupScene() override {
+			Level::Level level("assets/levels/level_1.map");
+
 			this->objects.emplace_back(Object::ObjectFactory<Object::Camera>::createPointer(
 				glm::vec3{ 0, 0.25, -2 }, false)
 			);
 
 			// setup background
 			this->objects.emplace_back(Object::ObjectFactory<Object::Grid>::createPointer(
-				glm::vec3{ 0,0,0 }, 10, 10, [this](glm::vec3 pos) {
+				glm::vec3{ 0,0,0 }, level, [this](glm::vec3 pos) {
 					pos.y += 0.04f;
 					pos.z -= 0.04f;
 					this->getObjects().emplace_back(
