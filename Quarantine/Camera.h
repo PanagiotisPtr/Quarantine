@@ -21,45 +21,11 @@ namespace Object {
 		constexpr static float cameraSensitivity = 0.01f;
 		constexpr static float zoomSensitivity = 0.1f;
 
-		Camera(glm::vec3 p) : Object(p, { 0.0f, 0.0f, 0.0f }), panning(false), lookAt(false), prevCursor(Global::Cursor) {
-			Global::EventBus.addEventHandler<Event::CursorPos>([this](const Event::Base& baseEvent) -> void {
-				const Event::CursorPos& e = static_cast<const Event::CursorPos&>(baseEvent);
-
-				const glm::dvec2 newPos{ e.xpos, e.ypos };
-				const glm::dvec2 diff = newPos - this->prevCursor;
-				this->prevCursor = newPos;
-
-				if (this->lookAt) {
-					this->mouseInput({ -diff.x, diff.y });
-				}
-
-				if (this->panning) {
-					this->pan(glm::vec3{ diff.x * Camera::cameraSensitivity, diff.y * Camera::cameraSensitivity, 0.0f });
-				}
-			}, this->getObjectId());
-
-			Global::EventBus.addEventHandler<Event::MouseButton>([this](const Event::Base& baseEvent) -> void {
-				const Event::MouseButton& e = static_cast<const Event::MouseButton&>(baseEvent);
-
-				if (e.button == GLFW_MOUSE_BUTTON_RIGHT && e.action == GLFW_PRESS) {
-					this->lookAt = true;
-				}
-				else {
-					this->lookAt = false;
-				}
-				if (e.button == GLFW_MOUSE_BUTTON_MIDDLE && e.action == GLFW_PRESS) {
-					this->panning = true;
-				}
-				else {
-					this->panning = false;
-				}
-			}, this->getObjectId());
-
-			Global::EventBus.addEventHandler<Event::MouseScroll>([this](const Event::Base& baseEvent) -> void {
-				const Event::MouseScroll& e = static_cast<const Event::MouseScroll&>(baseEvent);
-
-				this->pan(glm::vec3{ 0.0f, 0.0f, e.yoffset * Camera::zoomSensitivity });
-			}, this->getObjectId());
+		Camera(glm::vec3 p, bool l = false)
+		: Object(p, { 0.0f, 0.0f, 0.0f }), panning(false), lookAt(false), prevCursor(Global::Cursor), locked(l) {
+			if (!locked) {
+				this->attachEventHandlers();
+			}
 		}
 
 		void mouseInput(glm::dvec2 rotDelta) {
@@ -99,12 +65,54 @@ namespace Object {
 	private:
 		bool panning;
 		bool lookAt;
+		bool locked;
 		glm::dvec2 prevCursor;
 
 		template<typename T> T clamp(T a, T b, T x) {
 			if (x < a) return a;
 			if (x > b) return b;
 			return x;
+		}
+
+		void attachEventHandlers() {
+			Global::EventBus.addEventHandler<Event::CursorPos>([this](const Event::Base& baseEvent) -> void {
+				const Event::CursorPos& e = static_cast<const Event::CursorPos&>(baseEvent);
+
+				const glm::dvec2 newPos{ e.xpos, e.ypos };
+				const glm::dvec2 diff = newPos - this->prevCursor;
+				this->prevCursor = newPos;
+
+				if (this->lookAt) {
+					this->mouseInput({ -diff.x, diff.y });
+				}
+
+				if (this->panning) {
+					this->pan(glm::vec3{ diff.x * Camera::cameraSensitivity, diff.y * Camera::cameraSensitivity, 0.0f });
+				}
+			}, this->getObjectId());
+
+			Global::EventBus.addEventHandler<Event::MouseButton>([this](const Event::Base& baseEvent) -> void {
+				const Event::MouseButton& e = static_cast<const Event::MouseButton&>(baseEvent);
+
+				if (e.button == GLFW_MOUSE_BUTTON_RIGHT && e.action == GLFW_PRESS) {
+					this->lookAt = true;
+				}
+				else {
+					this->lookAt = false;
+				}
+				if (e.button == GLFW_MOUSE_BUTTON_MIDDLE && e.action == GLFW_PRESS) {
+					this->panning = true;
+				}
+				else {
+					this->panning = false;
+				}
+			}, this->getObjectId());
+
+			Global::EventBus.addEventHandler<Event::MouseScroll>([this](const Event::Base& baseEvent) -> void {
+				const Event::MouseScroll& e = static_cast<const Event::MouseScroll&>(baseEvent);
+
+				this->pan(glm::vec3{ 0.0f, 0.0f, e.yoffset * Camera::zoomSensitivity });
+			}, this->getObjectId());
 		}
 	};
 
