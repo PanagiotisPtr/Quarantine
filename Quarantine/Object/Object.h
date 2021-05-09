@@ -38,6 +38,10 @@ namespace Object {
 			moving(false), rotating(false), scaling(false), pos(p), rot({ 0.0f, 0.0f, 0.0f }),
 			scale({ 1.0f , 1.0f, 1.0f }), colour(c) {}
 
+		void init() {
+			this->attachEventHandlers();
+		}
+
 		virtual void draw() const {
 			glColor3f(this->colour.r, this->colour.g, this->colour.b);
 			this->drawObject();
@@ -101,6 +105,8 @@ namespace Object {
 		bool rotating;
 
 		virtual void drawShape() const = 0;
+
+		virtual void attachEventHandlers() = 0;
 
 		virtual glm::mat4 getTransform() const {
 			glm::mat4 out = glm::identity<glm::mat4>();

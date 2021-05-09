@@ -20,8 +20,47 @@ namespace Object {
 		};
 
 		Editable(glm::vec3 p, glm::vec3 c)
-			: Object(p, c), prevPos(p), prevRot({ 0.0f, 0.0f, 0.0f }), prevScale(scale),
-			prevCursor(Global::Cursor), axis(Axis::NONE), locked(false) {
+		: Object(p, c), prevPos(p), prevRot({ 0.0f, 0.0f, 0.0f }), prevScale(scale),
+		prevCursor(Global::Cursor), axis(Axis::NONE), locked(false) {}
+
+		void deselect() override {
+			if (this->moving || this->rotating || this->scaling) {
+				this->place();
+			}
+			else {
+				this->selected = false;
+			}
+		}
+
+		void moveAndPlaceObject(glm::vec3 changeVector) {
+			this->pos = glm::translate(this->getTransform(), changeVector) * glm::vec4{ 0.0f,0.0f,0.0f,1.0f };
+			this->place();
+		}
+
+		void scaleAndPlaceObject(glm::vec3 changeVector) {
+			this->scale += changeVector;
+			this->place();
+		}
+
+		void rotateAndPlaceObject(glm::vec3 changeVector) {
+			this->rot += changeVector;
+			this->place();
+		}
+
+		bool isLocked() { return this->locked; }
+
+	protected:
+		Axis axis;
+		glm::vec3 prevPos;
+		glm::vec3 prevRot;
+		glm::vec3 prevScale;
+		glm::dvec2 prevCursor;
+
+		void lock() { this->locked = true; }
+		
+		void unlock() { this->locked = false; }
+
+		void attachEventHandlers() override {
 			Global::EventBus.addEventHandler<Event::CursorPos>([this](const Event::Base& baseEvent) -> void {
 				const Event::CursorPos& e = static_cast<const Event::CursorPos&>(baseEvent);
 
@@ -112,43 +151,6 @@ namespace Object {
 			}, this->getObjectId());
 		}
 
-		void deselect() override {
-			if (this->moving || this->rotating || this->scaling) {
-				this->place();
-			}
-			else {
-				this->selected = false;
-			}
-		}
-
-		void moveAndPlaceObject(glm::vec3 changeVector) {
-			this->pos = glm::translate(this->getTransform(), changeVector) * glm::vec4{ 0.0f,0.0f,0.0f,1.0f };
-			this->place();
-		}
-
-		void scaleAndPlaceObject(glm::vec3 changeVector) {
-			this->scale += changeVector;
-			this->place();
-		}
-
-		void rotateAndPlaceObject(glm::vec3 changeVector) {
-			this->rot += changeVector;
-			this->place();
-		}
-
-		bool isLocked() { return this->locked; }
-
-	protected:
-		Axis axis;
-		glm::vec3 prevPos;
-		glm::vec3 prevRot;
-		glm::vec3 prevScale;
-		glm::dvec2 prevCursor;
-
-		void lock() { this->locked = true; }
-		
-		void unlock() { this->locked = false; }
-
 		void place() {
 			this->prevPos = this->pos;
 			this->prevRot = this->rot;
@@ -202,6 +204,7 @@ namespace Object {
 
 			return out;
 		}
+
 	private:
 		bool locked;
 	};

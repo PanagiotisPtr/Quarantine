@@ -23,11 +23,7 @@ namespace Object {
 		constexpr static float zoomSensitivity = 0.1f;
 
 		Camera(glm::vec3 p, bool l = false)
-		: Editable(p, { 0.0f, 0.0f, 0.0f }), panning(false), lookAt(false), prevCursor(Global::Cursor), locked(l) {
-			if (!locked) {
-				this->attachEventHandlers();
-			}
-		}
+		: Editable(p, { 0.0f, 0.0f, 0.0f }), panning(false), lookAt(false), prevCursor(Global::Cursor), locked(l) {}
 
 		void mouseInput(glm::dvec2 rotDelta) {
 			this->rot.x += (float)(rotDelta.x * Camera::mouseSensitivity);
@@ -75,7 +71,11 @@ namespace Object {
 			return x;
 		}
 
-		void attachEventHandlers() {
+		void attachEventHandlers() override {
+			Editable::attachEventHandlers();
+			if (locked) {
+				return;
+			}
 			Global::EventBus.addEventHandler<Event::CursorPos>([this](const Event::Base& baseEvent) -> void {
 				const Event::CursorPos& e = static_cast<const Event::CursorPos&>(baseEvent);
 

@@ -4,6 +4,7 @@
 #include "Screen.h"
 
 #include "../Object/Object.h"
+#include "../Object/ObjectFactory.h"
 #include "../Object/Camera.h"
 #include "../Object/Plane.h"
 #include "../Object/Tree.h"
@@ -57,11 +58,14 @@ namespace Screen {
 		}
 
 		void setupScene() override {
-			this->objects.emplace_back(new Object::Camera({ 0, 0.25, -2 }, false));
+			this->objects.emplace_back(Object::ObjectFactory<Object::Camera>::createPointer(
+				glm::vec3{ 0, 0.25, -2 }, false)
+			);
 
 			// setup background
-			this->objects.emplace_back(new Object::Grid({ 0,0,0 }, 10, 10));
-
+			this->objects.emplace_back(Object::ObjectFactory<Object::Grid>::createPointer(
+				glm::vec3{ 0,0,0 }, 10, 10)
+			);
 		}
 	};
 

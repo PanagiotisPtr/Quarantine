@@ -140,6 +140,9 @@
     <ClInclude Include="Object\Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Object\ObjectFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\sprite_dice.bmp">

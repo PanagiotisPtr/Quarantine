@@ -57,25 +57,33 @@ namespace Screen {
 		}
 
 		void setupScene() override {
-			this->objects.emplace_back(new Object::Camera({ 0, 0.25, -2 }, true));
+			this->objects.emplace_back(Object::ObjectFactory<Object::Camera>::createPointer(
+				glm::vec3{ 0, 0.25, -2 }, true)
+			);
 
 			// setup background
-			this->objects.emplace_back(new Object::Image({ 0,0,0 }, "assets/mainScreen.bmp"));
+			this->objects.emplace_back(Object::ObjectFactory<Object::Image>::createPointer(
+				glm::vec3{ 0,0,0 }, "assets/mainScreen.bmp")
+			);
 			this->objects.back()->moveAndPlaceObject({ 0.0f,0.5f,0.0 });
 			this->objects.back()->scaleAndPlaceObject({ -0.4f,-0.4f,-0.4f });
 			this->objects.back()->scaleAndPlaceObject({ 0.65f,0.1f,0.65f });
 
 			// setup 'play' button
-			this->objects.emplace_back(new Object::Button({ 0,0,0 }, "assets/play.bmp", [this]() {
-				this->transitionScreen(ScreenFactory<Game>::createPointer(this->screenTransitionFunction));
-			}));
+			this->objects.emplace_back(Object::ObjectFactory<Object::Button>::createPointer(
+				glm::vec3{ 0,0,0 }, "assets/play.bmp", [this]() {
+					this->transitionScreen(ScreenFactory<Game>::createPointer(this->screenTransitionFunction));
+				})
+			);
 			this->objects.back()->moveAndPlaceObject({ 0.0f,0.8f,-0.01f });
 			this->objects.back()->scaleAndPlaceObject({ -0.7f,-0.9f,-0.7f });
 
 			// setup 'exit' button
-			this->objects.emplace_back(new Object::Button({ 0,0,0 }, "assets/exit.bmp", [this]() {
-				this->transitionScreen(ScreenFactory<Exit>::createPointer(this->screenTransitionFunction));
-			}));
+			this->objects.emplace_back(Object::ObjectFactory<Object::Button>::createPointer(
+				glm::vec3{ 0,0,0 }, "assets/exit.bmp", [this]() {
+					this->transitionScreen(ScreenFactory<Exit>::createPointer(this->screenTransitionFunction));
+				})
+			);
 			this->objects.back()->moveAndPlaceObject({ 0.0f,0.3f,-0.01f });
 			this->objects.back()->scaleAndPlaceObject({ -0.7f,-0.9f,-0.7f });
 		}

@@ -8,6 +8,7 @@
 #include "ScreenIdGenerator.h"
 
 #include "../Object/Object.h"
+#include "../Object/ObjectFactory.h"
 #include "../Object/Camera.h"
 #include "../Object/Plane.h"
 #include "../Object/Pyramid.h"
@@ -115,25 +116,39 @@ namespace Screen {
 			while (!this->objectsQueue.empty()) {
 				switch (this->objectsQueue.front()) {
 				case ObjectClasses::SPHERE:
-					this->objects.emplace_back(new Object::Sphere({ 0, 0, 0 }, { 0.8f, 0.2f, 0.2f }));
+					this->objects.emplace_back(Object::ObjectFactory<Object::Sphere>::createPointer(
+						glm::vec3{ 0,0,0 }, glm::vec3{ 0.8f, 0.2f, 0.2f })
+					);
 					break;
 				case ObjectClasses::PLANE:
-					this->objects.emplace_back(new Object::Plane({ 0, 0, 0 }, { 0.8f, 0.2f, 0.2f }));
+					this->objects.emplace_back(Object::ObjectFactory<Object::Plane>::createPointer(
+						glm::vec3{ 0,0,0 }, glm::vec3{ 0.8f, 0.2f, 0.2f })
+					);
 					break;
 				case ObjectClasses::CUBE:
-					this->objects.emplace_back(new Object::Cube({ 0, 0, 0 }, { 0.8f, 0.2f, 0.2f }));
+					this->objects.emplace_back(Object::ObjectFactory<Object::Cube>::createPointer(
+						glm::vec3{ 0,0,0 }, glm::vec3{ 0.8f, 0.2f, 0.2f })
+					);
 					break;
 				case ObjectClasses::CYLINDER:
-					this->objects.emplace_back(new Object::Cylinder({ 0, 0, 0 }, { 0.8f, 0.2f, 0.2f }));
+					this->objects.emplace_back(Object::ObjectFactory<Object::Cylinder>::createPointer(
+						glm::vec3{ 0,0,0 }, glm::vec3{ 0.8f, 0.2f, 0.2f })
+					);
 					break;
 				case ObjectClasses::LIGHT:
-					this->objects.emplace_back(new Object::Light({ 0, 0, 0 }));
+					this->objects.emplace_back(Object::ObjectFactory<Object::Light>::createPointer(
+						glm::vec3{ 0,0,0 })
+					);
 					break;
 				case ObjectClasses::IMAGE:
-					this->objects.emplace_back(new Object::Image({ 0,0,0 }, "assets/mainScreen.bmp"));
+					this->objects.emplace_back(Object::ObjectFactory<Object::Image>::createPointer(
+						glm::vec3{ 0,0,0 }, "assets/mainScreen.bmp")
+					);
 					break;
 				case ObjectClasses::PYRAMID:
-					this->objects.emplace_back(new Object::Pyramid({ 0,0,0 }, {0.0f, 1.0f, 0.0f }));
+					this->objects.emplace_back(Object::ObjectFactory<Object::Pyramid>::createPointer(
+						glm::vec3{ 0,0,0 }, glm::vec3{ 0.8f, 0.2f, 0.2f })
+					);
 					break;
 				}
 				this->objectsQueue.pop();
