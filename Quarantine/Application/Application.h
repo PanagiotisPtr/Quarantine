@@ -200,9 +200,14 @@ namespace Application {
 		}
 
 		void clearScreenQueue() {
+			bool willTransition = this->screenQueue.size() > 1;
 			while (this->screenQueue.size() > 1) {
 				this->screenQueue.front()->clearScreen();
 				this->screenQueue.pop();
+			}
+
+			if (willTransition) {
+				ColourIdGenerator::resetIds();
 			}
 		}
 

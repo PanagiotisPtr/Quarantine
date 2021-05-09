@@ -13,7 +13,15 @@ public:
 	static ColourId getColourId();
 
 	static unsigned decodeId(const ColourId& ci);
+
+	static void useStaticId(unsigned id);
+
+	static void useDynamicId();
+
+	static void resetIds();
 private:
+	static bool fixed;
+	static unsigned fixedId;
 };
 
 #endif

@@ -92,6 +92,8 @@ namespace Object {
 		bool isSeleted() const { return this->selected; }
 		virtual void deselect() { this->selected = false; }
 		virtual bool isChanging() const { return this->moving || this->rotating || this->scaling; }
+
+		glm::vec3 getPos() { return this->pos; }
 	protected:
 		ColourIdGenerator::ColourId colourId;
 		glm::vec3 pos;

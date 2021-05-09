@@ -9,6 +9,8 @@ namespace Object {
 	class Tree : public Composite {
 	public:
 		Tree(glm::vec3 p) : Composite(p) {
+			ColourIdGenerator::useStaticId(this->getObjectId());
+
 			this->objects.emplace_back(ObjectFactory<Pyramid>::createPointer(
 				glm::vec3{ 0,0,0 }, glm::vec3{ 0.0f,1.0f,0.0f })
 			);
@@ -32,6 +34,8 @@ namespace Object {
 			this->objects.back()->scaleAndPlaceObject({ -0.85f,-0.85f,-0.85f });
 			this->objects.back()->scaleAndPlaceObject({ 0.0f,0.65f,0.0f });
 			this->objects.back()->moveAndPlaceObject({ 0.0f, -0.51f,0.0 });
+
+			ColourIdGenerator::useDynamicId();
 		}
 
 	protected:

@@ -14,6 +14,8 @@ namespace Object {
 		Box(glm::vec3 p) : Composite(p) {
 			float pi = std::acos(-1.0f);
 
+			ColourIdGenerator::useStaticId(this->getObjectId());
+
 			this->objects.emplace_back(ObjectFactory<Image>::createPointer(
 				glm::vec3{ 0,0,0 }, "assets/box.bmp")
 			);
@@ -47,6 +49,8 @@ namespace Object {
 			);
 			this->objects.back()->moveAndPlaceObject({ 0.0f,-1.0f,1.0f });
 			this->objects.back()->rotateAndPlaceObject({ 0.0f,pi / 2,0.0f });
+
+			ColourIdGenerator::useDynamicId();
 		}
 
 	protected:

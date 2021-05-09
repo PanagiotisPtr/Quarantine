@@ -17,6 +17,8 @@
 #include "../Object/Button.h"
 #include "../Object/Light.h"
 
+#include "glm/vec3.hpp"
+
 namespace Screen {
 
 	class Game : public Screen {
@@ -64,8 +66,15 @@ namespace Screen {
 
 			// setup background
 			this->objects.emplace_back(Object::ObjectFactory<Object::Grid>::createPointer(
-				glm::vec3{ 0,0,0 }, 10, 10)
-			);
+				glm::vec3{ 0,0,0 }, 10, 10, [this](glm::vec3 pos) {
+					pos.y += 0.04f;
+					pos.z -= 0.04f;
+					this->getObjects().emplace_back(
+						Object::ObjectFactory<Object::Box>::createPointer(pos)
+					);
+					this->getObjects().back()->scaleAndPlaceObject({ -0.96f, -0.96f, -0.96f });
+				}
+			));
 		}
 	};
 

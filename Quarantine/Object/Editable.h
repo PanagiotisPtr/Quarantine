@@ -60,7 +60,7 @@ namespace Object {
 		
 		void unlock() { this->locked = false; }
 
-		void attachEventHandlers() override {
+		virtual void attachEventHandlers() override {
 			Global::EventBus.addEventHandler<Event::CursorPos>([this](const Event::Base& baseEvent) -> void {
 				const Event::CursorPos& e = static_cast<const Event::CursorPos&>(baseEvent);
 
