@@ -162,6 +162,7 @@
     <ClCompile Include="Screen\Start.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation\Keyframe.h" />
     <ClInclude Include="Level\Level.h" />
     <ClInclude Include="Object\Box.h" />
     <ClInclude Include="Object\Button.h" />

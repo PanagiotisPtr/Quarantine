@@ -6,6 +6,8 @@
 
 #include "Screen.h"
 
+#include "../Animation/Keyframe.h"
+
 #include "../Level/Level.h"
 
 #include "../Object/Object.h"
