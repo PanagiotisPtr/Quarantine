@@ -18,7 +18,7 @@ namespace Object {
 		return a < b ? std::make_tuple(a, b) : std::make_tuple(b, a);
 	}
 
-	void Sphere::SubdivisionTriangle::draw() const {
+	void Sphere::SubdivisionTriangle::draw() {
 		glBegin(GL_TRIANGLES);
 		for (const VertexId vertexId : vertices) {
 			glDrawVec3(parent->vertices[vertexId]);
@@ -42,7 +42,7 @@ namespace Object {
 	}
 
 	void Sphere::drawShape() const {
-		for (const SubdivisionTriangle& triangle : triangles) {
+		for (SubdivisionTriangle triangle : triangles) {
 			triangle.draw();
 		}
 	}

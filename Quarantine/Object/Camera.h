@@ -30,7 +30,10 @@ namespace Object {
 			this->rot.x += (float)(rotDelta.x * Camera::mouseSensitivity);
 			this->rot.y += (float)(rotDelta.y * Camera::mouseSensitivity);
 			this->rot.y = clamp((float)glm::radians(-80.0), (float)glm::radians(80.0), this->rot.y);
-			std::cout << this->rot.x << ' ' << this->rot.y << ' ' << this->rot.z << std::endl;
+
+			std::cout << "pos: " << this->pos.x << ' ' << this->pos.y << ' ' << this->pos.z << std::endl;
+			std::cout << "rot: " << this->rot.x << ' ' << this->rot.y << ' ' << this->rot.z << std::endl;
+			std::cout << "scale: " << this->scale.x << ' ' << this->scale.y << ' ' << this->scale.z << std::endl;
 		}
 
 		void pan(glm::vec3 movementVector) {
@@ -45,14 +48,14 @@ namespace Object {
 			return glm::lookAt(eye, cen, up);
 		}
 
-		void draw() const override {
+		void draw() override {
 			glMatrixMode(GL_PROJECTION);
 			glLoadMatrixf(glm::value_ptr(glm::perspective(glm::radians(40.0f), 16.0f / 9.0f, 0.1f, 10.0f)));
 			glMatrixMode(GL_MODELVIEW);
 			glLoadMatrixf(glm::value_ptr(this->viewMatrix()));
 		}
 
-		void drawWithId() const override {
+		void drawWithId() override {
 			this->draw();
 		}
 

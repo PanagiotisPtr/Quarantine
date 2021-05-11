@@ -63,7 +63,7 @@ namespace Object {
 			glPopMatrix();
 		}
 
-		virtual void drawWithId() const override {
+		virtual void drawWithId() override {
 			glColor3f(this->colourId.r, this->colourId.g, this->colourId.b);
 			glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();

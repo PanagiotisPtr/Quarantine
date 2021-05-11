@@ -6,13 +6,12 @@
 
 #include "Screen.h"
 
-#include "../Animation/Keyframe.h"
-
 #include "../Level/Level.h"
 
 #include "../Object/Object.h"
 #include "../Object/ObjectFactory.h"
 #include "../Object/Camera.h"
+#include "../Object/GrassPlane.h"
 #include "../Object/Plane.h"
 #include "../Object/Tree.h"
 #include "../Object/Box.h"
@@ -70,29 +69,30 @@ namespace Screen {
 			Level::Level level("assets/levels/level_1.map");
 			this->maxBoxes = level.boxCount;
 			this->objects.emplace_back(Object::ObjectFactory<Object::Camera>::createPointer(
-				glm::vec3{ 0.5, 2.75, -0.5 }, false)
+				glm::vec3{ 0.5, 2.75, -0.5 }, true)
 			);
 			this->objects.back()->setRot(glm::vec3 { -3.72529e-09, 1.39626, 0.0 });
 
 			// setup background
-			this->objects.emplace_back(Object::ObjectFactory<Object::Grid>::createPointer(
-				glm::vec3{ 0,0,0 }, level, [this](glm::vec3 pos, Object::Grid::PlaceBoxFunc place,
-				Object::Grid::UnplaceBoxFunc unplace, bool occupied) {
-					std::cout << std::boolalpha << occupied << std::endl;
+			this->objects.emplace_back(Object::ObjectFactory<Object::Grid<Object::GrassPlane> >::createPointer(
+				glm::vec3{ 0,0,0 }, level, [this](glm::vec3 pos, Object::Grid<Object::GrassPlane>::PlaceBoxFunc place,
+				Object::Grid<Object::GrassPlane>::UnplaceBoxFunc unplace, bool occupied) {
+					int tmpBoxCount = boxCount;
 					if (occupied) {
-						if (boxCount > 0) {
-							boxCount--;
+						if (tmpBoxCount > 0) {
+							tmpBoxCount--;
 						}
 						unsigned boxId = unplace();
 						if (boxId == 0) {
 							return;
 						}
 						this->deleteObject(boxId);
+						this->updateBoxCount(tmpBoxCount);
 						std::cout << "deleting: " << boxId << std::endl;
 						return;
 					}
-					if (boxCount < maxBoxes) {
-						boxCount++;
+					if (tmpBoxCount < maxBoxes) {
+						tmpBoxCount++;
 					}
 					else {
 						return;
@@ -104,13 +104,39 @@ namespace Screen {
 					);
 					this->getObjects().back()->scaleAndPlaceObject({ -0.96f, -0.96f, -0.96f });
 					place(this->getObjects().back()->getObjectId());
+					this->updateBoxCount(tmpBoxCount);
 				}
 			));
+
+			this->objects.emplace_back(
+				Object::ObjectFactory<Object::Grid<Object::Box> >::createPointer(
+					glm::vec3{ 1.5,0.8,0 }, this->maxBoxes - this->boxCount, 1
+				)
+			);
+
+			this->boxDisplayId = this->objects.back()->getObjectId();
 		}
 
 	private:
+		unsigned boxDisplayId;
 		int maxBoxes;
 		int boxCount;
+
+		void updateBoxCount(int newBoxCount) {
+			if (newBoxCount == boxCount) return;
+			this->boxCount = newBoxCount;
+			this->deleteObject(this->boxDisplayId);
+
+			if (newBoxCount == maxBoxes) return;
+
+			this->objects.emplace_back(
+				Object::ObjectFactory<Object::Grid<Object::Box> >::createPointer(
+					glm::vec3{ 1.5,0.8,0 }, this->maxBoxes - this->boxCount, 1
+				)
+			);
+
+			this->boxDisplayId = this->objects.back()->getObjectId();
+		}
 	};
 
 } // namespace screen

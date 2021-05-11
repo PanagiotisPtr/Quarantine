@@ -17,21 +17,26 @@
 
 namespace Object {
 
+	template<typename TileObject>
 	class Grid : public Composite {
 	public:
 		using PlaceBoxFunc = std::function<void(unsigned)>;
 		using UnplaceBoxFunc = std::function<unsigned()>;
 		using CallbackFunc = std::function<void(glm::vec3, PlaceBoxFunc, UnplaceBoxFunc, bool)>;
+		using OnUpdateFunc = std::function<void(Grid& g)>;
 
-		Grid(glm::vec3 p, size_t width, size_t height, CallbackFunc cb)
-		: Composite(p), callback(cb), level(width, height, 5) {
+		Grid(glm::vec3 p, size_t width, size_t height,
+			CallbackFunc cb = [](glm::vec3, PlaceBoxFunc, UnplaceBoxFunc, bool) {}, OnUpdateFunc updateCb = [](Grid& g) {})
+		: Composite(p), callback(cb), onUpdate(updateCb), level(width, height, 5) {
+			float pi = std::acos(-1.0f);
 			for (size_t i = 0; i < height; i++) {
 				for (size_t j = 0; j < width; j++) {
-					this->objects.emplace_back(ObjectFactory<Plane>::createPointer(
-						glm::vec3{ 0,0,0 }, glm::vec3{ 1.0f,0.0f,0.0f })
+					this->objects.emplace_back(ObjectFactory<TileObject>::createPointer(
+						glm::vec3{ 0,0,0 })
 					);
 					this->objects.back()->scaleAndPlaceObject({ -0.95f,-0.95f,-0.95f });
 					this->objects.back()->moveAndPlaceObject({ (float)i * 2.5f,0.0f, (float)j * 2.5f });
+					this->objects.back()->rotateAndPlaceObject({ 0.0f,pi / 2,0.0f });
 					this->tileMapIdx[this->objects.back()->getObjectId()]
 						= { this->level.height - 1 - i, this->level.width - j - 1 };
 				}
@@ -43,14 +48,17 @@ namespace Object {
 			this->lock();
 		}
 
-		Grid(glm::vec3 p, Level::Level l, CallbackFunc cb): Composite(p), callback(cb), level(l) {
+		Grid(glm::vec3 p, Level::Level l, CallbackFunc cb, OnUpdateFunc updateCb = [](Grid& g) {})
+		: Composite(p), callback(cb), onUpdate(updateCb), level(l) {
+			float pi = std::acos(-1.0f);
 			for (size_t i = 0; i < this->level.height; i++) {
 				for (size_t j = 0; j < this->level.width; j++) {
-					this->objects.emplace_back(ObjectFactory<Plane>::createPointer(
-						glm::vec3{ 0,0,0 }, glm::vec3{ 1.0f,0.0f,0.0f })
+					this->objects.emplace_back(ObjectFactory<TileObject>::createPointer(
+						glm::vec3{ 0,0,0 })
 					);
 					this->objects.back()->scaleAndPlaceObject({ -0.95f,-0.95f,-0.95f });
 					this->objects.back()->moveAndPlaceObject({ (float)j * 2.5f,0.0f, (float)i * 2.5f });
+					this->objects.back()->rotateAndPlaceObject({ 0.0f,pi / 2,0.0f });
 					this->tileMapIdx[this->objects.back()->getObjectId()]
 						= { this->level.height - 1 - i, this->level.width - j - 1 };
 				}
@@ -108,10 +116,21 @@ namespace Object {
 			return boxes.count(i) && boxes[i].count(j);
 		}
 
+		void removeLast() {
+			if (this->objects.size()) {
+				this->objects.pop_back();
+			}
+		}
+
+		size_t getObjectCount() {
+			return this->getObjects().size();
+		}
+
 	protected:
 		Level::Level level;
 		std::unordered_map<unsigned, std::pair<int, int> > tileMapIdx;
 		std::unordered_map<int, std::unordered_map<int, unsigned> > boxes;
+		OnUpdateFunc onUpdate;
 		unsigned firstTileId;
 		unsigned lastTileId;
 

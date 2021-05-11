@@ -19,7 +19,7 @@ namespace Object {
 			}
 		}
 
-		virtual void drawWithId() const {
+		virtual void drawWithId() {
 			glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();
 			glMultMatrixf(glm::value_ptr(this->getTransform()));

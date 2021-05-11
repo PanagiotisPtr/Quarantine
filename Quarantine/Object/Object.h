@@ -42,7 +42,8 @@ namespace Object {
 			this->attachEventHandlers();
 		}
 
-		virtual void draw() const {
+		virtual void draw() {
+			this->update();
 			glColor3f(this->colour.r, this->colour.g, this->colour.b);
 			this->drawObject();
 			if (this->selected) {
@@ -55,7 +56,7 @@ namespace Object {
 			this->drawObject();
 		}
 
-		virtual void drawWithId() const {
+		virtual void drawWithId() {
 			glColor3f(this->colourId.r, this->colourId.g, this->colourId.b);
 			this->drawObject();
 		}
@@ -97,7 +98,14 @@ namespace Object {
 
 		glm::vec3 getRot() { return this->rot; }
 
+		glm::vec3 getScale() { return this->rot; }
+
+		void setPos(glm::vec3 newPos) { this->pos = newPos; }
+
 		void setRot(glm::vec3 newRot) { this->rot = newRot; }
+
+		void setScale(glm::vec3 newScale) { this->scale = newScale; }
+
 	protected:
 		ColourIdGenerator::ColourId colourId;
 		glm::vec3 pos;
@@ -124,6 +132,8 @@ namespace Object {
 
 			return out;
 		}
+
+		virtual void update() {}
 
 		virtual void drawObject() const {
 			glMatrixMode(GL_MODELVIEW);

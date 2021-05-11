@@ -22,7 +22,7 @@ namespace Object {
 
 			SubdivisionTriangle(Sphere* parent, std::array < VertexId, 3> vertices, TriangleId id) :
 				parent{ parent }, vertices{ vertices }, id{ id } {}
-			void draw() const;
+			void draw();
 			glm::vec3 centroid() const;
 		};
 
