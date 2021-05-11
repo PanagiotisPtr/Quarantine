@@ -30,10 +30,8 @@ ColourIdGenerator::ColourId ColourIdGenerator::getColourId() {
 
 	rv.b = sum - 2.0f > 0.0f ? sum - 2.0f : 0.0f;
 	rv.b = rv.b > 1.0f ? 1.0f : rv.b;
-	std::cout << prevId << std::endl;
 
 	if (sum > 3.0f) {
-		std::cout << prevId << std::endl;
 		throw std::exception("Ran out of IDs");
 	}
 

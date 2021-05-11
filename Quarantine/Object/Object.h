@@ -94,6 +94,10 @@ namespace Object {
 		virtual bool isChanging() const { return this->moving || this->rotating || this->scaling; }
 
 		glm::vec3 getPos() { return this->pos; }
+
+		glm::vec3 getRot() { return this->rot; }
+
+		void setRot(glm::vec3 newRot) { this->rot = newRot; }
 	protected:
 		ColourIdGenerator::ColourId colourId;
 		glm::vec3 pos;

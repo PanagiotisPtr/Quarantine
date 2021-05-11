@@ -12,6 +12,7 @@ namespace Object {
 	class Box : public Composite {
 	public:
 		Box(glm::vec3 p) : Composite(p) {
+			this->lock();
 			float pi = std::acos(-1.0f);
 
 			ColourIdGenerator::useStaticId(this->getObjectId());
@@ -53,6 +54,7 @@ namespace Object {
 			ColourIdGenerator::useDynamicId();
 		}
 
+		virtual void select() override {}
 	protected:
 		std::string objectName() const { return "BOX"; }
 	};

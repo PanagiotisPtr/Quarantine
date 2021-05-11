@@ -19,7 +19,9 @@ namespace Object {
 
 	class Grid : public Composite {
 	public:
-		using CallbackFunc = std::function<void(glm::vec3)>;
+		using PlaceBoxFunc = std::function<void(unsigned)>;
+		using UnplaceBoxFunc = std::function<unsigned()>;
+		using CallbackFunc = std::function<void(glm::vec3, PlaceBoxFunc, UnplaceBoxFunc, bool)>;
 
 		Grid(glm::vec3 p, size_t width, size_t height, CallbackFunc cb)
 		: Composite(p), callback(cb), level(width, height, 5) {
@@ -82,9 +84,34 @@ namespace Object {
 		}
 
 		void select() override { }
+
+		void placeBox(int i, int j, unsigned boxId) {
+			level.map[i][j] = Level::Cell::BOX;
+			if (boxes.count(i) == 0) {
+				boxes[i] = {};
+			}
+			boxes[i][j] = boxId;
+		}
+
+		unsigned unplaceBox(int i, int j) {
+			level.map[i][j] = Level::Cell::GRASS;
+			if (boxes.count(i) == 0 || boxes[i].count(j) == 0) {
+				return 0;
+			}
+			unsigned boxId = boxes[i][j];
+			boxes[i].erase(j);
+
+			return boxId;
+		}
+
+		bool hasBox(int i, int j) {
+			return boxes.count(i) && boxes[i].count(j);
+		}
+
 	protected:
 		Level::Level level;
 		std::unordered_map<unsigned, std::pair<int, int> > tileMapIdx;
+		std::unordered_map<int, std::unordered_map<int, unsigned> > boxes;
 		unsigned firstTileId;
 		unsigned lastTileId;
 
@@ -119,7 +146,17 @@ namespace Object {
 						if (this->tileMapIdx.find(o->getObjectId()) != std::end(this->tileMapIdx)) {
 							std::pair<int,int> p = this->tileMapIdx[o->getObjectId()];
 							if (this->level.map[p.first][p.second] == Level::Cell::GRASS) {
-								this->callback(o->getPos());
+								this->callback(o->getPos(), [this, p](unsigned boxId) -> void {
+									this->placeBox(p.first, p.second, boxId);
+								}, [this, p]() -> unsigned {
+									return this->unplaceBox(p.first, p.second);
+								}, false);
+							} else if (this->level.map[p.first][p.second] == Level::Cell::BOX) {
+								this->callback(o->getPos(), [this, p](unsigned boxId) -> void {
+									this->placeBox(p.first, p.second, boxId);
+								}, [this, p]() -> unsigned {
+									return this->unplaceBox(p.first, p.second);
+								}, true);
 							}
 						}
 					}

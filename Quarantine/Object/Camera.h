@@ -2,6 +2,7 @@
 #define OBJECT_CAMERA_H
 
 #include <functional>
+#include <iostream>
 
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
@@ -29,7 +30,8 @@ namespace Object {
 			this->rot.x += (float)(rotDelta.x * Camera::mouseSensitivity);
 			this->rot.y += (float)(rotDelta.y * Camera::mouseSensitivity);
 			this->rot.y = clamp((float)glm::radians(-80.0), (float)glm::radians(80.0), this->rot.y);
-		};
+			std::cout << this->rot.x << ' ' << this->rot.y << ' ' << this->rot.z << std::endl;
+		}
 
 		void pan(glm::vec3 movementVector) {
 			movementVector = movementVector * Camera::moveSensitivity;

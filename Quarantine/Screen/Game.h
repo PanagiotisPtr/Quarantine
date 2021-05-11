@@ -1,6 +1,9 @@
 #ifndef SCREEN_GAME_H
 #define SCREEN_GAME_H
 
+#include <iostream>
+#include <algorithm>
+
 #include "Screen.h"
 
 #include "../Level/Level.h"
@@ -25,7 +28,7 @@ namespace Screen {
 
 	class Game : public Screen {
 	public:
-		Game(ScreenTransitionFunc t) : Screen(t) {}
+		Game(ScreenTransitionFunc t) : Screen(t), boxCount(0), maxBoxes(0){}
 	protected:
 		void update() override {}
 
@@ -63,23 +66,49 @@ namespace Screen {
 
 		void setupScene() override {
 			Level::Level level("assets/levels/level_1.map");
-
+			this->maxBoxes = level.boxCount;
 			this->objects.emplace_back(Object::ObjectFactory<Object::Camera>::createPointer(
-				glm::vec3{ 0, 0.25, -2 }, false)
+				glm::vec3{ 0.5, 2.75, -0.5 }, false)
 			);
+			this->objects.back()->setRot(glm::vec3 { -3.72529e-09, 1.39626, 0.0 });
 
 			// setup background
 			this->objects.emplace_back(Object::ObjectFactory<Object::Grid>::createPointer(
-				glm::vec3{ 0,0,0 }, level, [this](glm::vec3 pos) {
+				glm::vec3{ 0,0,0 }, level, [this](glm::vec3 pos, Object::Grid::PlaceBoxFunc place,
+				Object::Grid::UnplaceBoxFunc unplace, bool occupied) {
+					std::cout << std::boolalpha << occupied << std::endl;
+					if (occupied) {
+						if (boxCount > 0) {
+							boxCount--;
+						}
+						unsigned boxId = unplace();
+						if (boxId == 0) {
+							return;
+						}
+						this->deleteObject(boxId);
+						std::cout << "deleting: " << boxId << std::endl;
+						return;
+					}
+					if (boxCount < maxBoxes) {
+						boxCount++;
+					}
+					else {
+						return;
+					}
 					pos.y += 0.04f;
 					pos.z -= 0.04f;
 					this->getObjects().emplace_back(
 						Object::ObjectFactory<Object::Box>::createPointer(pos)
 					);
 					this->getObjects().back()->scaleAndPlaceObject({ -0.96f, -0.96f, -0.96f });
+					place(this->getObjects().back()->getObjectId());
 				}
 			));
 		}
+
+	private:
+		int maxBoxes;
+		int boxCount;
 	};
 
 } // namespace screen
