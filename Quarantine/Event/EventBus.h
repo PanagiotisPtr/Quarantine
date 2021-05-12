@@ -75,6 +75,14 @@ public:
 	}
 
 	template<>
+	void addEventHandler<Event::Animate>(EventHandler handler, unsigned objectId) {
+		if (this->handlers.find("Animate") == std::end(this->handlers)) {
+			this->handlers["Animate"] = {};
+		}
+		this->handlers["Animate"][objectId].push_back(handler);
+	}
+
+	template<>
 	void addEventHandler<Event::Tick>(EventHandler handler, unsigned objectId) {
 		if (this->handlers.find("Tick") == std::end(this->handlers)) {
 			this->handlers["Tick"] = {};

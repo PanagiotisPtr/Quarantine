@@ -60,6 +60,10 @@ namespace Event {
 		double yoffset;
 	};
 
+	struct Animate : Base {
+		Animate() : Base("Animate") {};
+	};
+
 	struct Tick : Base {
 		Tick() : Base("Tick") {};
 	};

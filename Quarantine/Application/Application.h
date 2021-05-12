@@ -160,6 +160,7 @@ namespace Application {
 			GLfloat global_ambient[] = { 0.6f, 0.6f, 0.6f, 1.0f };
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
 			double prevTime = glfwGetTime();
+			double prevTick = glfwGetTime();
 			while (!glfwWindowShouldClose(Global::Window))
 			{
 				if (this->screenQueue.size() > 1) {
@@ -168,6 +169,11 @@ namespace Application {
 
 				if (glfwGetTime() - prevTime >= 0.01) {
 					prevTime = glfwGetTime();
+					Global::EventBus.pushEvent(Event::Animate());
+				}
+
+				if (glfwGetTime() - prevTick >= 1.0) {
+					prevTick = glfwGetTime();
 					Global::EventBus.pushEvent(Event::Tick());
 				}
 

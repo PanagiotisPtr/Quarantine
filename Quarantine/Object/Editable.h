@@ -54,6 +54,8 @@ namespace Object {
 			this->place();
 		}
 
+		virtual void tick() {}
+
 	protected:
 		Axis axis;
 		glm::vec3 prevPos;
@@ -68,10 +70,14 @@ namespace Object {
 
 		virtual void attachEventHandlers() override {
 			if (this->animates) {
-				Global::EventBus.addEventHandler<Event::Tick>([this](const Event::Base& baseEvent) -> void {
+				Global::EventBus.addEventHandler<Event::Animate>([this](const Event::Base& baseEvent) -> void {
 					this->animate();
 				}, this->getObjectId());
 			}
+
+			Global::EventBus.addEventHandler<Event::Tick>([this](const Event::Base& baseEvent) -> void {
+				this->tick();
+			}, this->getObjectId());
 
 			Global::EventBus.addEventHandler<Event::CursorPos>([this](const Event::Base& baseEvent) -> void {
 				const Event::CursorPos& e = static_cast<const Event::CursorPos&>(baseEvent);
