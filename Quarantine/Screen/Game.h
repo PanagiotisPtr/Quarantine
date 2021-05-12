@@ -8,6 +8,8 @@
 
 #include "../Level/Level.h"
 
+#include "../Animation/Keyframe.h"
+
 #include "../Object/Object.h"
 #include "../Object/ObjectFactory.h"
 #include "../Object/Camera.h"
@@ -37,20 +39,19 @@ namespace Screen {
 			Global::EventBus.addEventHandler<Event::KeyPress>([this](const Event::Base& baseEvent) -> void {
 				const Event::KeyPress& e = static_cast<const Event::KeyPress&>(baseEvent);
 
-				if (e.key == GLFW_KEY_1 && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::PYRAMID);
-				}
-				if (e.key == GLFW_KEY_2 && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::CUBE);
-				}
-				if (e.key == GLFW_KEY_3 && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::SPHERE);
-				}
-				if (e.key == GLFW_KEY_4 && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::CYLINDER);
-				}
-				if (e.key == GLFW_KEY_L && e.action == GLFW_PRESS) {
-					this->objectsQueue.push(ObjectClasses::LIGHT);
+				glm::vec3 tpos{ 0.540255, 1.14891, -2.21037 };
+				glm::vec3 tort{ -0.03, 0.601261, 0 };
+				glm::vec3 tscale{ 1, 1, 1 };
+
+				if (e.key == GLFW_KEY_SPACE && e.action == GLFW_PRESS) {
+					auto& camera = this->getObjects().front();
+					camera->runSequence(
+						Animation::animate(
+							{ camera->getPos(), camera->getRot(), camera->getScale() },
+							{ tpos, tort, tscale },
+							100
+						)
+					);
 				}
 			}, this->getId());
 
@@ -69,7 +70,7 @@ namespace Screen {
 			Level::Level level("assets/levels/level_1.map");
 			this->maxBoxes = level.boxCount;
 			this->objects.emplace_back(Object::ObjectFactory<Object::Camera>::createPointer(
-				glm::vec3{ 0.5, 2.75, -0.5 }, true)
+				glm::vec3{ 0.5, 2.75, -0.5 }, false)
 			);
 			this->objects.back()->setRot(glm::vec3 { -3.72529e-09, 1.39626, 0.0 });
 

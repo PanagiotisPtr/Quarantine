@@ -135,6 +135,7 @@ namespace Object {
 		unsigned lastTileId;
 
 		void attachEventHandlers() override {
+			Editable::attachEventHandlers();
 			Global::EventBus.addEventHandler<Event::MouseButton>([this](const Event::Base& baseEvent) -> void {
 				const Event::MouseButton& e = static_cast<const Event::MouseButton&>(baseEvent);
 

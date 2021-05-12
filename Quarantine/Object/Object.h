@@ -8,6 +8,8 @@
 	#define GLEW_STATIC
 #endif
 
+#include <mutex>
+
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 #include "glm/vec3.hpp"
@@ -18,6 +20,7 @@
 #include "glm/common.hpp"
 
 #include "../Colour/ColourIdGenerator.h"
+#include "../Animation/Keyframe.h"
 
 enum class ObjectClasses {
 	SPHERE,
@@ -43,6 +46,7 @@ namespace Object {
 		}
 
 		virtual void draw() {
+			this->frameCount++;
 			this->update();
 			glColor3f(this->colour.r, this->colour.g, this->colour.b);
 			this->drawObject();
@@ -98,13 +102,23 @@ namespace Object {
 
 		glm::vec3 getRot() { return this->rot; }
 
-		glm::vec3 getScale() { return this->rot; }
+		glm::vec3 getScale() { return this->scale; }
 
 		void setPos(glm::vec3 newPos) { this->pos = newPos; }
 
 		void setRot(glm::vec3 newRot) { this->rot = newRot; }
 
 		void setScale(glm::vec3 newScale) { this->scale = newScale; }
+
+		virtual void setFromKeyframe(Animation::Keyframe k) {
+			this->setPos(k.pos);
+			this->setRot(k.rot);
+			this->setScale(k.scale);
+		}
+
+		void runSequence(Animation::Sequence s) {
+			this->sequence = s;
+		}
 
 	protected:
 		ColourIdGenerator::ColourId colourId;
@@ -113,6 +127,8 @@ namespace Object {
 		glm::vec3 scale;
 		glm::vec3 colour;
 		unsigned objectId;
+		unsigned frameCount;
+		Animation::Sequence sequence;
 		bool selected;
 		bool moving;
 		bool scaling;
@@ -133,7 +149,14 @@ namespace Object {
 			return out;
 		}
 
-		virtual void update() {}
+		virtual void update() { }
+
+		virtual void animate() {
+			if (!this->sequence.empty()) {
+				this->setFromKeyframe(sequence.front());
+				this->sequence.pop();
+			}
+		}
 
 		virtual void drawObject() const {
 			glMatrixMode(GL_MODELVIEW);

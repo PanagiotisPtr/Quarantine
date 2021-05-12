@@ -65,12 +65,21 @@ public:
 		}
 		this->handlers["MouseButton"][objectId].push_back(handler);
 	}
+	
 	template<>
 	void addEventHandler<Event::MouseScroll>(EventHandler handler, unsigned objectId) {
 		if (this->handlers.find("MouseScroll") == std::end(this->handlers)) {
 			this->handlers["MouseScroll"] = {};
 		}
 		this->handlers["MouseScroll"][objectId].push_back(handler);
+	}
+
+	template<>
+	void addEventHandler<Event::Tick>(EventHandler handler, unsigned objectId) {
+		if (this->handlers.find("Tick") == std::end(this->handlers)) {
+			this->handlers["Tick"] = {};
+		}
+		this->handlers["Tick"][objectId].push_back(handler);
 	}
 
 private:

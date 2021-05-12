@@ -19,9 +19,9 @@ namespace Object {
 			Z
 		};
 
-		Editable(glm::vec3 p, glm::vec3 c)
+		Editable(glm::vec3 p, glm::vec3 c, bool anim = false)
 		: Object(p, c), prevPos(p), prevRot({ 0.0f, 0.0f, 0.0f }), prevScale(scale),
-		prevCursor(Global::Cursor), axis(Axis::NONE), locked(false) {}
+		prevCursor(Global::Cursor), axis(Axis::NONE), locked(false), animates(anim) {}
 
 		void deselect() override {
 			if (this->moving || this->rotating || this->scaling) {
@@ -49,18 +49,30 @@ namespace Object {
 
 		bool isLocked() { return this->locked; }
 
+		void setFromKeyframe(Animation::Keyframe k) override {
+			Object::setFromKeyframe(k);
+			this->place();
+		}
+
 	protected:
 		Axis axis;
 		glm::vec3 prevPos;
 		glm::vec3 prevRot;
 		glm::vec3 prevScale;
 		glm::dvec2 prevCursor;
+		bool animates;
 
 		void lock() { this->locked = true; }
 		
 		void unlock() { this->locked = false; }
 
 		virtual void attachEventHandlers() override {
+			if (this->animates) {
+				Global::EventBus.addEventHandler<Event::Tick>([this](const Event::Base& baseEvent) -> void {
+					this->animate();
+				}, this->getObjectId());
+			}
+
 			Global::EventBus.addEventHandler<Event::CursorPos>([this](const Event::Base& baseEvent) -> void {
 				const Event::CursorPos& e = static_cast<const Event::CursorPos&>(baseEvent);
 

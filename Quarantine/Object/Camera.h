@@ -24,7 +24,7 @@ namespace Object {
 		constexpr static float zoomSensitivity = 0.1f;
 
 		Camera(glm::vec3 p, bool l = false)
-		: Editable(p, { 0.0f, 0.0f, 0.0f }), panning(false), lookAt(false), prevCursor(Global::Cursor), locked(l) {}
+		: Editable(p, { 0.0f, 0.0f, 0.0f }, true), panning(false), lookAt(false), prevCursor(Global::Cursor), locked(l) {}
 
 		void mouseInput(glm::dvec2 rotDelta) {
 			this->rot.x += (float)(rotDelta.x * Camera::mouseSensitivity);
@@ -49,6 +49,7 @@ namespace Object {
 		}
 
 		void draw() override {
+			this->update();
 			glMatrixMode(GL_PROJECTION);
 			glLoadMatrixf(glm::value_ptr(glm::perspective(glm::radians(40.0f), 16.0f / 9.0f, 0.1f, 10.0f)));
 			glMatrixMode(GL_MODELVIEW);

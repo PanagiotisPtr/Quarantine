@@ -159,11 +159,16 @@ namespace Application {
 		void start() {
 			GLfloat global_ambient[] = { 0.6f, 0.6f, 0.6f, 1.0f };
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
-
+			double prevTime = glfwGetTime();
 			while (!glfwWindowShouldClose(Global::Window))
 			{
 				if (this->screenQueue.size() > 1) {
 					this->clearScreenQueue();
+				}
+
+				if (glfwGetTime() - prevTime >= 0.01) {
+					prevTime = glfwGetTime();
+					Global::EventBus.pushEvent(Event::Tick());
 				}
 
 				this->getCurrentScreen()->draw(this->windowWidth, this->windowHeight);
