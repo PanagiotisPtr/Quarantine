@@ -54,8 +54,7 @@ namespace Screen {
 							100
 						)
 					);
-				}
-				if (e.key == GLFW_KEY_1 && e.action == GLFW_PRESS) {
+
 					this->simulation->loadLevel(this->level);
 					this->simulation->startPandemic();
 				}
@@ -73,7 +72,7 @@ namespace Screen {
 		}
 
 		void setupScene() override {
-			this->level = Level::Level("assets/levels/level_1.map");
+			this->level = Level::Level("assets/levels/level1.lvl");
 			this->maxBoxes = this->level.boxCount;
 			this->objects.emplace_back(Object::ObjectFactory<Object::Camera>::createPointer(
 				glm::vec3{ 0.5, 2.75, -0.5 }, false)
@@ -123,8 +122,26 @@ namespace Screen {
 			this->simulation = std::make_unique<Simulation::Simulation>(
 				this->getObjects(),
 				level,
-				[](){ printf("You Win!\n"); },
-				[]() { printf("You Lose...\n"); }
+				[this](){
+					this->getObjects().emplace_back(
+						Object::ObjectFactory<Object::Image>::createPointer(glm::vec3{0,0,0}, "assets/win.bmp")
+					);
+					this->getObjects().back()->setScale({ 0.5, 0.5, 0.5 });
+					this->getObjects().back()->moveAndPlaceObject({ 1.0, 0.0, 0.0 });
+					this->getObjects().back()->scaleAndPlaceObject({ 0.5, 0.0, 0.0 });
+					this->getObjects().back()->rotateAndPlaceObject({ 0.0, 0.4, 0.0 });
+					printf("You Win!\n");
+				},
+				[this]() {
+					this->getObjects().emplace_back(
+						Object::ObjectFactory<Object::Image>::createPointer(glm::vec3{ 0,0,0 }, "assets/lose.bmp")
+					);
+					this->getObjects().back()->setScale({ 0.5, 0.5, 0.5 });
+					this->getObjects().back()->moveAndPlaceObject({ 1.0, 0.0, 0.0 });
+					this->getObjects().back()->scaleAndPlaceObject({ 0.5, 0.0, 0.0 });
+					this->getObjects().back()->rotateAndPlaceObject({ 0.0, 0.4, 0.0 });
+					printf("You Lose...\n");
+				}
 			);
 		}
 
