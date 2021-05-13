@@ -3,8 +3,11 @@
 
 #include <iostream>
 #include <algorithm>
+#include <sstream>
 
 #include "Screen.h"
+#include "Exit.h"
+#include "ScreenFactory.h"
 
 #include "../Level/Level.h"
 
@@ -35,7 +38,7 @@ namespace Screen {
 	public:
 		Game(ScreenTransitionFunc t)
 		: Screen(t), boxCount(0), maxBoxes(0), level(0,0,0), boxDisplayId(0),
-		gameEnded(false) {
+		gameEnded(false), currentLevel(1) {
 			this->objects.emplace_back(Object::ObjectFactory<Object::Camera>::createPointer(
 				glm::vec3{ 0.5, 2.75, -0.5 }, false)
 			);
@@ -58,8 +61,8 @@ namespace Screen {
 					100
 				)
 			);
-			std::cout << "Reset!" << std::endl;
 			this->gameEnded = false;
+			this->currentLevel++;
 			this->clearItems();
 			this->setupScene();
 		}
@@ -77,7 +80,17 @@ namespace Screen {
 
 				if (e.key == GLFW_KEY_SPACE && e.action == GLFW_PRESS) {
 					if (this->gameOver()) {
+						std::stringstream ss;
+						ss << "assets/levels/level" << this->currentLevel+1 << ".lvl";
 						this->endSimulation();
+
+						if (!this->fileExists(ss.str())) {
+							this->clearScreen();
+							this->transitionScreen(
+								ScreenFactory<Exit>::createPointer(this->screenTransitionFunction)
+							);
+							printf("Goodbye\n");
+						}
 						this->resetGame();
 						return;
 					}
@@ -106,9 +119,16 @@ namespace Screen {
 			}, this->getId());
 		}
 
-
 		void setupScene() override {
-			this->level = Level::Level("assets/levels/level1.lvl");
+			std::stringstream ss;
+			ss << "assets/levels/level" << this->currentLevel << ".lvl";
+
+			if (!this->fileExists(ss.str())) {
+				this->transitionScreen(
+					ScreenFactory<Exit>::createPointer(this->screenTransitionFunction)
+				);
+			}
+			this->level = Level::Level(ss.str());
 			this->maxBoxes = this->level.boxCount;
 
 			ColourIdGenerator::setCounter(this->objects.back()->getObjectId() + 10);
@@ -186,6 +206,7 @@ namespace Screen {
 		unsigned boxDisplayId;
 		std::unique_ptr<Simulation::Simulation> simulation;
 		Level::Level level;
+		unsigned currentLevel;
 		bool gameEnded;
 		int maxBoxes;
 		int boxCount;
@@ -204,6 +225,12 @@ namespace Screen {
 			);
 
 			this->boxDisplayId = this->objects.back()->getObjectId();
+		}
+
+		bool fileExists(const std::string& filename) {
+			std::ifstream i(filename);
+			
+			return i.good();
 		}
 	};
 
