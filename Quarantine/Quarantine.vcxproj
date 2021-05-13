@@ -169,6 +169,8 @@
     <ClInclude Include="Object\Camera.h" />
     <ClInclude Include="Colour\ColourIdGenerator.h" />
     <ClInclude Include="Object\Composite.h" />
+    <ClInclude Include="Object\Covid.h" />
+    <ClInclude Include="Object\Crown.h" />
     <ClInclude Include="Object\Cube.h" />
     <ClInclude Include="Object\Cylinder.h" />
     <ClInclude Include="Event\Event.h" />
@@ -183,6 +185,7 @@
     <ClInclude Include="Screen\Exit.h" />
     <ClInclude Include="Screen\Game.h" />
     <ClInclude Include="Screen\ScreenIdGenerator.h" />
+    <ClInclude Include="Simulation\Simulation.h" />
     <ClInclude Include="Utility\ImageLoader.h" />
     <ClInclude Include="Object\Light.h" />
     <ClInclude Include="Object\Object.h" />

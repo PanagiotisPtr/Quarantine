@@ -49,6 +49,7 @@ namespace Object {
 			ColourIdGenerator::useDynamicId();
 
 			this->scaleAndPlaceObject({ -0.8f,-0.8f,-0.8f });
+			this->animates = true;
 		}
 
 		virtual void select() override {}

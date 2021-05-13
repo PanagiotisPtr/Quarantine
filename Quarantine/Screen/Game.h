@@ -25,13 +25,15 @@
 #include "../Object/Button.h"
 #include "../Object/Light.h"
 
+#include "../Simulation/Simulation.h"
+
 #include "glm/vec3.hpp"
 
 namespace Screen {
 
 	class Game : public Screen {
 	public:
-		Game(ScreenTransitionFunc t) : Screen(t), boxCount(0), maxBoxes(0){}
+		Game(ScreenTransitionFunc t) : Screen(t), boxCount(0), maxBoxes(0), level(0,0,0), boxDisplayId(0) {}
 	protected:
 		void update() override {}
 
@@ -53,6 +55,10 @@ namespace Screen {
 						)
 					);
 				}
+				if (e.key == GLFW_KEY_1 && e.action == GLFW_PRESS) {
+					this->simulation->loadLevel(this->level);
+					this->simulation->startPandemic();
+				}
 			}, this->getId());
 
 			Global::EventBus.addEventHandler<Event::KeyPress>([this](const Event::Base& baseEvent) -> void {
@@ -67,8 +73,8 @@ namespace Screen {
 		}
 
 		void setupScene() override {
-			Level::Level level("assets/levels/level_1.map");
-			this->maxBoxes = level.boxCount;
+			this->level = Level::Level("assets/levels/level_1.map");
+			this->maxBoxes = this->level.boxCount;
 			this->objects.emplace_back(Object::ObjectFactory<Object::Camera>::createPointer(
 				glm::vec3{ 0.5, 2.75, -0.5 }, false)
 			);
@@ -76,7 +82,7 @@ namespace Screen {
 
 			// setup background
 			this->objects.emplace_back(Object::ObjectFactory<Object::Grid<Object::GrassPlane> >::createPointer(
-				glm::vec3{ 0,0,0 }, level, [this](glm::vec3 pos, Object::Grid<Object::GrassPlane>::PlaceBoxFunc place,
+				glm::vec3{ 0,0,0 }, &this->level, [this](glm::vec3 pos, Object::Grid<Object::GrassPlane>::PlaceBoxFunc place,
 				Object::Grid<Object::GrassPlane>::UnplaceBoxFunc unplace, bool occupied) {
 					int tmpBoxCount = boxCount;
 					if (occupied) {
@@ -89,7 +95,6 @@ namespace Screen {
 						}
 						this->deleteObject(boxId);
 						this->updateBoxCount(tmpBoxCount);
-						std::cout << "deleting: " << boxId << std::endl;
 						return;
 					}
 					if (tmpBoxCount < maxBoxes) {
@@ -114,12 +119,19 @@ namespace Screen {
 					glm::vec3{ 1.5,0.8,0 }, this->maxBoxes - this->boxCount, 1
 				)
 			);
-
 			this->boxDisplayId = this->objects.back()->getObjectId();
+			this->simulation = std::make_unique<Simulation::Simulation>(
+				this->getObjects(),
+				level,
+				[](){ printf("You Win!\n"); },
+				[]() { printf("You Lose...\n"); }
+			);
 		}
 
 	private:
 		unsigned boxDisplayId;
+		std::unique_ptr<Simulation::Simulation> simulation;
+		Level::Level level;
 		int maxBoxes;
 		int boxCount;
 

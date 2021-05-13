@@ -56,6 +56,21 @@ namespace Object {
 
 		virtual void tick() {}
 
+		virtual void setPos(glm::vec3 newPos) override {
+			Object::setPos(newPos);
+			this->place();
+		}
+
+		virtual void setRot(glm::vec3 newRot) override {
+			Object::setRot(newRot);
+			this->place();
+		}
+
+		virtual void setScale(glm::vec3 newScale) override {
+			Object::setScale(newScale);
+			this->place();
+		}
+
 	protected:
 		Axis axis;
 		glm::vec3 prevPos;
@@ -169,7 +184,7 @@ namespace Object {
 			}, this->getObjectId());
 		}
 
-		void place() {
+		virtual void place() {
 			this->prevPos = this->pos;
 			this->prevRot = this->rot;
 			this->prevScale = this->scale;

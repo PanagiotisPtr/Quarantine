@@ -104,11 +104,11 @@ namespace Object {
 
 		glm::vec3 getScale() { return this->scale; }
 
-		void setPos(glm::vec3 newPos) { this->pos = newPos; }
+		virtual void setPos(glm::vec3 newPos) { this->pos = newPos; }
 
-		void setRot(glm::vec3 newRot) { this->rot = newRot; }
+		virtual void setRot(glm::vec3 newRot) { this->rot = newRot; }
 
-		void setScale(glm::vec3 newScale) { this->scale = newScale; }
+		virtual void setScale(glm::vec3 newScale) { this->scale = newScale; }
 
 		virtual void setFromKeyframe(Animation::Keyframe k) {
 			this->setPos(k.pos);
