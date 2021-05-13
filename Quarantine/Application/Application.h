@@ -61,7 +61,7 @@ namespace Application {
 
 			const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
-			Global::Window = glfwCreateWindow(mode->width, mode->height, "Scene Builder", NULL, NULL);
+			Global::Window = glfwCreateWindow(mode->width, mode->height, "Quarantine", NULL, NULL);
 			if (!Global::Window) {
 				glfwTerminate();
 				throw std::exception("GLFW failed to create window.");

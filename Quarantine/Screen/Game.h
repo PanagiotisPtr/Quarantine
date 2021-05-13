@@ -67,22 +67,36 @@ namespace Screen {
 			this->setupScene();
 		}
 
-		void endSimulation() { this->simulation.reset(); }
+		void enterPandemicMode() {
+			glm::vec3 tpos{ 0.540255, 1.14891, -2.21037 };
+			glm::vec3 tort{ -0.03, 0.601261, 0 };
+
+			auto& camera = this->getObjects().front();
+			camera->runSequence(
+				Animation::animate(
+					{ camera->getPos(), camera->getRot(), camera->getScale() },
+					{ tpos, tort, camera->getScale() },
+					100
+				)
+			);
+
+			this->simulation->loadLevel(this->level);
+			this->simulation->startPandemic();
+		}
+
+		void releaseVaccine() { this->simulation.reset(); }
 	protected:
 		void update() override {}
 
 		void attachEventHandlers() override {
 			Global::EventBus.addEventHandler<Event::KeyPress>([this](const Event::Base& baseEvent) -> void {
 				const Event::KeyPress& e = static_cast<const Event::KeyPress&>(baseEvent);
-				
-				glm::vec3 tpos{ 0.540255, 1.14891, -2.21037 };
-				glm::vec3 tort{ -0.03, 0.601261, 0 };
 
 				if (e.key == GLFW_KEY_SPACE && e.action == GLFW_PRESS) {
 					if (this->gameOver()) {
 						std::stringstream ss;
 						ss << "assets/levels/level" << this->currentLevel+1 << ".lvl";
-						this->endSimulation();
+						this->releaseVaccine();
 
 						if (!this->fileExists(ss.str())) {
 							this->clearScreen();
@@ -94,17 +108,7 @@ namespace Screen {
 						this->resetGame();
 						return;
 					}
-					auto& camera = this->getObjects().front();
-					camera->runSequence(
-						Animation::animate(
-							{ camera->getPos(), camera->getRot(), camera->getScale() },
-							{ tpos, tort, camera->getScale() },
-							100
-						)
-					);
-
-					this->simulation->loadLevel(this->level);
-					this->simulation->startPandemic();
+					this->enterPandemicMode();
 				}
 			}, this->getId());
 
