@@ -29,6 +29,10 @@ namespace Simulation {
 		Simulation(std::vector<EditableObjectPtr>& objs, Level::Level l, WinCallback wc, LoseCallback lc)
 		: level(l), objects(objs), winCallback(wc), loseCallback(lc), simulationResult(false) {}
 
+		~Simulation() {
+			Global::EventBus.detachHandlersForObject(Simulation::ID);
+		}
+
 		void loadLevel(Level::Level l) { this->level = l; }
 
 		void startPandemic() {
@@ -220,7 +224,7 @@ namespace Simulation {
 				if (noChanges) {
 					this->callResult();
 				}
-			}, ID);
+			}, Simulation::ID);
 		}
 
 		std::pair<int, int> targetPosition() {

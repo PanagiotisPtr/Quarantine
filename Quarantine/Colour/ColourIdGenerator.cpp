@@ -57,3 +57,7 @@ void ColourIdGenerator::useStaticId(unsigned id) {
 void ColourIdGenerator::resetIds() {
 	ColourIdGenerator::prevId = 0;
 }
+
+void ColourIdGenerator::setCounter(unsigned id) {
+	ColourIdGenerator::prevId = id;
+}

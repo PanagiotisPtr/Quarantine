@@ -19,6 +19,8 @@ public:
 	static void useDynamicId();
 
 	static void resetIds();
+
+	static void setCounter(unsigned id);
 private:
 	static bool fixed;
 	static unsigned fixedId;

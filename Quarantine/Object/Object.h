@@ -46,7 +46,6 @@ namespace Object {
 		}
 
 		virtual void draw() {
-			this->frameCount++;
 			this->update();
 			glColor3f(this->colour.r, this->colour.g, this->colour.b);
 			this->drawObject();
@@ -120,6 +119,7 @@ namespace Object {
 			this->sequence = s;
 		}
 
+		bool isAnimating() { return !this->sequence.empty(); }
 	protected:
 		ColourIdGenerator::ColourId colourId;
 		glm::vec3 pos;
@@ -127,7 +127,6 @@ namespace Object {
 		glm::vec3 scale;
 		glm::vec3 colour;
 		unsigned objectId;
-		unsigned frameCount;
 		Animation::Sequence sequence;
 		bool selected;
 		bool moving;

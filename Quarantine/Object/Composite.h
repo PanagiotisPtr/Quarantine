@@ -30,7 +30,7 @@ namespace Object {
 			}
 
 			glPopMatrix();
-		}
+		}	
 
 		std::string objectName() const { return "COMPOSITE"; }
 	protected:

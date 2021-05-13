@@ -68,7 +68,8 @@ namespace Object {
 			this->firstTileId = this->objects.front()->getObjectId();
 			this->lastTileId = this->objects.back()->getObjectId();
 
-			for (size_t i = this->firstTileId; i < this->level->height * this->level->width; i++) {
+			for (size_t i = 0; i < this->level->height * this->level->width; i++) {
+				size_t idx = this->firstTileId + i;
 				auto& tile = this->objects[i];
 				auto p = this->tileMapIdx[tile->getObjectId()];
 				unsigned mapI = p.first;

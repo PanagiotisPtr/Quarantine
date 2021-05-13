@@ -95,6 +95,14 @@ namespace Screen {
 			Global::EventBus.detachHandlersForObject(this->getId());
 		}
 
+		void clearItems() {
+			while (this->objects.size() > 1) {
+				auto& o = this->objects.back();
+				Global::EventBus.detachHandlersForObject(o->getObjectId());
+				this->objects.pop_back();
+			}
+		}
+
 		void transitionScreen(Screen* screen) {
 			this->screenTransitionFunction(screen);
 		}

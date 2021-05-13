@@ -23,6 +23,10 @@ namespace Object {
 		: Object(p, c), prevPos(p), prevRot({ 0.0f, 0.0f, 0.0f }), prevScale(scale),
 		prevCursor(Global::Cursor), axis(Axis::NONE), locked(false), animates(anim) {}
 
+		~Editable() {
+			Global::EventBus.detachHandlersForObject(this->getObjectId());
+		}
+
 		void deselect() override {
 			if (this->moving || this->rotating || this->scaling) {
 				this->place();
